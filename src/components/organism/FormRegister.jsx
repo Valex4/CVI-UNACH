@@ -1,20 +1,20 @@
 import WrapperInput from "../molecules/wrapperInput";
 import { Formik, Form } from "formik";
 import Swal from "sweetalert2";
-import logo from "../../assets/images/logo.png"
+import logo1 from "../../assets/images/logo.png";
 import { Link } from "react-router-dom";
-function FormLogin() {
+function FormRegister() {
     return ( 
         <>
 
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <img
                     className="mx-auto h-[147px] w-auto"
-                    src={logo}
+                    src={logo1}
                     alt="Your Company"
                 />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Currículum Vitae Institucional
+                    Registro al Currículum Vitae Institucional
                 </h2>
             </div>
             
@@ -22,7 +22,8 @@ function FormLogin() {
             <Formik
             initialValues={{
                 email: "",
-                password:""
+                password:"",
+                confirmPassword: ""
             }}
             onSubmit={async(values, actions) =>{
                 try{
@@ -62,6 +63,7 @@ function FormLogin() {
                 <Form onSubmit={handleSubmit} className="space-y-2">
                      <WrapperInput mensaje={"Correo electronico"} type={"email"} name={"email"} onchange={handleChange} />
                      <WrapperInput mensaje={"Constraseña"} type={"password"} name={"password"} onchange={handleChange} />
+                     <WrapperInput mensaje={"Repite la contraseña"} type={"password"} name={"confirmPassword"} onchange={handleChange} />
                      <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-[#18386B] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#30599b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isSubmitting ? "Iniciando..." : "Iniciar Sesion"}</button>
                      </div>
@@ -70,12 +72,12 @@ function FormLogin() {
         </Formik>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-            ¿No tienes una cuenta?{' '}
-            <Link to="/register" className="font-semibold leading-6 text-[#18386B] hover:text-[#30599b]">Registrate</Link>
+            ¿Ya tienes una cuenta?{' '}
+            <Link to="/" className="font-semibold leading-6 text-[#18386B] hover:text-[#30599b]">Inicia Sesión</Link>
           </p>
         </div>
         </>
      );
 }
 
-export default FormLogin;
+export default FormRegister;
