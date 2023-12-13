@@ -3,25 +3,15 @@ import styled from "styled-components";
 
 function WrapperInput({mensaje, type, name, dato, onchange}) {
     return ( 
-            <StyledDiv>
-                <StyledLabel>{mensaje}</StyledLabel>
-                <Input type={type} name={name} dato={dato} onchange={onchange} />
-            </StyledDiv>
+            <div>
+                <label className="block text-sm font-medium leading-6 text-gray-900">{mensaje}</label>
+                <Input type={type} name={name} dato={dato} onchange={onchange}/>
+            </div>
 
      );
 }
 
 export default WrapperInput;
 
-const StyledDiv = styled.div`
-    border: 2px solid red;
-`
 
-const StyledLabel = styled.label`
-    font-family: 'Inter';
-    font-size: 1.4em;
-    font-style: normal;
-    font-weight:${props => props.grosor ? '400' : '400'};
-    line-height: normal;
-    text-align:${props => props.aling ? 'center' : 'left'};
-`
+
