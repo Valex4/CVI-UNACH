@@ -1,15 +1,14 @@
 import Dash from "../components/templates/Dash";
-import FormLogin from "../components/organism/FormLogin";
+import WrapperInput from "../components/molecules/wrapperInput";
 function Home() {
     return (
         <>
             <Dash/>
-            <main className="ml-[256px] h-auto">
-                <div className="mt-20">
-                    {/* Aca van los formularios */}
-                    <FormLogin/>
-                    <FormLogin/>    
-                    
+            <main className="dashboard">
+                <div className="mt-20 pl-8 pr-8 ">
+                    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            
+                    </div>
                 </div>
                    
             </main> 

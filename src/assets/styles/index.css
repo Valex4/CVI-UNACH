@@ -2,3 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@layer components {
+    .dashboard{
+        @apply sm:ml-[256px] h-auto;
+    }
+}
