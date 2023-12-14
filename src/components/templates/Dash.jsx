@@ -32,7 +32,7 @@ function Dash() {
             <LinkDashboard options={2} lines={["Datos Generales"]} name1={"Datos Generales"} name2={"Domicilio de Residencia"} to={"/datosGenerales"} to2={"/domicilioResidencia"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={0} lines={["Formación Academica"]} to={"/formacionAcademica"}/>
+            <LinkDashboard options={2} lines={["Formación Academica"]} name1={"Grados Academicos"} name2={"Otro"} to={"/formacionAcademica/gradosAcademicos"} to2={"/formacionAcademicaOtros"}/>
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Trayectoria Profesional"]} to={"/trayectoriaProfesional"}/>
