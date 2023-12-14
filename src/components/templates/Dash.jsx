@@ -9,7 +9,7 @@ function Dash() {
   return (
     <>
          <header>
-                <nav className="bg-[#18386B] border-[#18386B] px-4 lg:px-6 py-2.5 fixed w-full top-0">
+                <nav className="bg-[#18386B] border-[#18386B] h-[68px] fixed w-full top-0">
                 <div className="flex flex-wrap justify-end items-center mx-auto max-w-screen-xl">
                     <a href="https://www.unach.mx/" className="flex items-center">
                     <img  className="mx-auto h-[90px] w-auto" alt="Unach Logo" />

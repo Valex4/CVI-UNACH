@@ -8,6 +8,7 @@ import TecnologicaInnovacion from "../pages/TecnologicaInnovacion";
 
 
 import "../assets/styles/index.css"
+import DomicilioResidencia from "../pages/DomicilioResidencia";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/formacionAcademica" element={<FormacionAcademica/>}/>
                     <Route path="/tecnoInnova" element={<TecnologicaInnovacion/>}/>
+                    <Route path="/domicilioResidencia" element={<DomicilioResidencia/>} />
                 </Routes>
             </BrowserRouter>
         </>
