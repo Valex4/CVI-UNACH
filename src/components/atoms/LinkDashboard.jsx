@@ -23,8 +23,7 @@ function LinkDashboard({lines, to, clases, options, name1, name2, name3, to2, to
           return (
           <> 
             <NavLink to={to}
-            className= {`flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-blue-600 group ${clases}`}>
-            
+            className= {`flex items-center dark:text-white p-2 rounded-lg  dark:hover:bg-blue-600 group `}>
             <span className="flex-1 whitespace-nowrap">
             {lines.map((line, index) => (
               <React.Fragment key={index}>
@@ -42,7 +41,7 @@ function LinkDashboard({lines, to, clases, options, name1, name2, name3, to2, to
         case 1:
           return(<>
               <NavLink
-            className= {`flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-blue-600 group ${clases}`}
+            className= {`flex items-center p-2  dark:text-white rounded-lg  dark:hover:bg-blue-600 group `}
             onClick={handleCategory1Toggle}>
             
             <span className="flex-1 whitespace-nowrap">
@@ -86,7 +85,7 @@ function LinkDashboard({lines, to, clases, options, name1, name2, name3, to2, to
         case 2:
           return(<>
             <NavLink 
-          className= {`flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-blue-600 group ${clases}`}
+          className= {`flex items-center p-2  rounded-lg  dark:text-white   dark:hover:bg-blue-600 grou`}
           onClick={handleCategory1Toggle}>
           
           <span className="flex-1 whitespace-nowrap">
@@ -133,7 +132,7 @@ function LinkDashboard({lines, to, clases, options, name1, name2, name3, to2, to
         case 3:
           return(<>
             <NavLink
-          className= {`flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-blue-600 group ${clases}`}
+          className= {`flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-blue-600 group`}
           onClick={handleCategory1Toggle}>
           
           <span className="flex-1 whitespace-nowrap">
@@ -183,11 +182,6 @@ function LinkDashboard({lines, to, clases, options, name1, name2, name3, to2, to
         break;
       }
     }
-    
-
-
-
-
     return (
         <>
       {renderOptions()}
