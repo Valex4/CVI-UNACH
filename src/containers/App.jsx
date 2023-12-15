@@ -7,6 +7,7 @@ import FormacionAcademica from "../pages/FormacioAcademica";
 import TecnologicaInnovacion from "../pages/TecnologicaInnovacion";
 import TrayectoriaProfesional from "../pages/TrayectoriaProfesional";
 import GeneralData from "../pages/GeneralData.";
+import Cientifica from "../pages/Cientifica";
 
 import "../assets/styles/index.css"
 import DomicilioResidencia from "../pages/DomicilioResidencia";
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/domicilioResidencia" element={<DomicilioResidencia/>} />
                     <Route path="/trayectoriaProfesional" element={<TrayectoriaProfesional/>}/>
                     <Route path="/datosGenerales" element={<GeneralData/>}/>
+                    <Route path="/cientifica" element={<Cientifica/>}/>
                 </Routes>
             </BrowserRouter>
         </>

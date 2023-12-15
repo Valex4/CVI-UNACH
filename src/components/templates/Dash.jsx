@@ -5,7 +5,6 @@ import logo from "../../assets/images/UnachAzul.png"
 
 
 function Dash() {
-
   return (
     <>
          <header>
@@ -38,7 +37,7 @@ function Dash() {
             <LinkDashboard options={0} lines={["Trayectoria Profesional"]} to={"/trayectoriaProfesional"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={2} lines={["Producción científica, ","tecnológica y de", "innovación"]} name1={"Cientifica"} name2={"Tecnológica y innovación"} to={"/cientifica"} to2={"/tecnoInnova"}/>
+            <LinkDashboard options={2} lines={["Producción científica, ","tecnológica y de", "innovación"]} name1={"Cientifica"} name2={"Tecnológica y de innovación"} to={"/cientifica"} to2={"/tecnoInnova"}/>
           </li>
           <li className="relative">
             <LinkDashboard options={3} lines={["Formación de personas"]} name1={"Cursos"} name2={"Tesis"} name3={"Diplomados"} to={"/cursos"} to3={"/diplomados"}/>
@@ -47,7 +46,7 @@ function Dash() {
             <LinkDashboard options={0} lines={["Comunicación pública", "de la ciencia, tecnológica", "y de innovación"]}  to={"/pCongresos"} />
           </li>
           <li className="relative">
-            <LinkDashboard options={0} lines={["Vinculación"]} to={"/proyectosInvestigación"} />
+            <LinkDashboard options={0} lines={["Vinculación"]} to={"/proyectosInvestigacion"} />
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Evaluciones"]} to={"/evalucacioes"}/> 
