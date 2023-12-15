@@ -40,7 +40,9 @@ export default function FormRecidencia() {
               timer: 1500,
             });
             console.table(values);
-          } catch (error) {}
+          } catch (error) {
+            console.log(error);
+          }
         }}
       >
         {({

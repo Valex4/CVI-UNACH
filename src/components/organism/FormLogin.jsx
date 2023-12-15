@@ -50,7 +50,7 @@ function FormLogin() {
                         showConfirmButton: false,
                         timer: 1500,
                       });
-                    console.log(values)
+                    console.table(values)
 
                 }catch(error){
 
