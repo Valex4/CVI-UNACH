@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import FormacionAcademica from "../pages/FormacioAcademica";
 import TecnologicaInnovacion from "../pages/TecnologicaInnovacion";
+import TrayectoriaProfesional from "../pages/TrayectoriaProfesional";
 
 
 import "../assets/styles/index.css"
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/formacionAcademica/gradosAcademicos" element={<FormacionAcademica/>}/>
                     <Route path="/tecnoInnova" element={<TecnologicaInnovacion/>}/>
                     <Route path="/domicilioResidencia" element={<DomicilioResidencia/>} />
+                    <Route path="/trayectoriaProfesional" element={<TrayectoriaProfesional/>}/>
                 </Routes>
             </BrowserRouter>
         </>
