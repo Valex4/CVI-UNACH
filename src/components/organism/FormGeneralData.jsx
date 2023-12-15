@@ -9,6 +9,7 @@ import Title from "../atoms/Title";
 import Button from "../atoms/Button";
 
 
+
 function FormGeneralData () {
   
   const Sexo = [
@@ -85,7 +86,7 @@ function FormGeneralData () {
                       });
                       console.table(values);
                 }catch(error){
-
+                    console.log(error);
                 }
             }} 
         
@@ -93,9 +94,10 @@ function FormGeneralData () {
             {({values, errors, touched, handleSubmit, handleChange, handleBlur, isSubmitting, setFieldValue}) => (
                 <Form onSubmit={handleSubmit} className="space-y-2 mt-[100px]">
                   <div id="content-to-pdf">
+                    <div className=" flex justify justify-center mb-5">
+                    <Title level={"h1"} text={"Experiencia Laboral"} />
+                    </div>
                     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-
                         <WrapperInput onchange={handleChange} name={"curp"} type="text" mensaje="CURP" />
                         <WrapperInput onchange={handleChange} name={"nombre"} type="text" mensaje="Nombre" />
                         <WrapperInput onchange={handleChange} name={"papellido"} type="text" mensaje="Primer apellido" />
@@ -130,7 +132,7 @@ function FormGeneralData () {
                 <WrapperTable onchange={handleChange} name={"openid"} className="bg-[#18386B]" mensaje="Open ID" />
           </div>
                 <div className="flex justify-end w-full gap-4">
-                <Button type={"button"} mensaje="Imprimir" onClick={handlerClickImprimir} className=" bg-white text-[#828282] mt-3" />
+                <Button type={"button"} mensaje="Imprimir" onclick={handlerClickImprimir} className=" bg-white text-[#828282] mt-3" />
                 <Button type={"submit"} mensaje="Guardar" className=" bg-[#18386B] text-white mt-3" />
                 </div>
             </div>
@@ -167,7 +169,7 @@ function FormGeneralData () {
                             edit
                             </span>
                           </button>
-                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2">
+                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2  hover:bg-red-600 ">
                           <span className="material-symbols-outlined">
                            delete
                            </span>
@@ -187,7 +189,7 @@ function FormGeneralData () {
                             edit
                             </span>
                           </button>
-                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2 ">
+                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2  hover:bg-red-600 ">
                           <span className="material-symbols-outlined">
                            delete
                            </span>

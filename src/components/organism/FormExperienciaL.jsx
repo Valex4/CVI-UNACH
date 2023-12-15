@@ -97,11 +97,15 @@ function FormExperienciaL() {
                         <td className="py-2 px-4 border-b">john@example.com</td>
                         <td className="py-2 px-4 border-b">si</td>
                         <td className="py-2 px-4 border-b">
-                          <button className="text-blue-500 hover:underline">
-                            Editar
+                        <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
+                          <span className="material-icons-sharp">
+                            edit
+                            </span>
                           </button>
-                          <button className="text-red-500 hover:underline ml-2">
-                            Eliminar
+                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2 hover:bg-red-600 ">
+                          <span className="material-symbols-outlined">
+                           delete
+                           </span>
                           </button>
                         </td>
                       </tr>
@@ -114,11 +118,15 @@ function FormExperienciaL() {
                         <td className="py-2 px-4 border-b">john@example.com</td>
                         <td className="py-2 px-4 border-b">No</td>
                         <td className="py-2 px-4 border-b">
-                          <button className="text-blue-500 hover:underline">
-                            Editar
+                        <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
+                          <span className="material-icons-sharp">
+                            edit
+                            </span>
                           </button>
-                          <button className="text-red-500 hover:underline ml-2">
-                            Eliminar
+                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2  hover:bg-red-600  ">
+                          <span className="material-symbols-outlined">
+                           delete
+                           </span>
                           </button>
                         </td>
                       </tr>
