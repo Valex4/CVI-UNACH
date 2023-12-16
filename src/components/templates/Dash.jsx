@@ -8,7 +8,7 @@ function Dash() {
   return (
     <>
          <header>
-                <nav className="bg-[#18386B] border-[#18386B] h-[68px] fixed w-full top-0">
+                <nav className="bg-[#18386B] border-[#18386B] h-[68px] fixed w-full top-0 z-50 ml-[256px]">
                 <div className="flex flex-wrap justify-end items-center mx-auto max-w-screen-xl">
                     <a href="https://www.unach.mx/" className="flex items-center">
                     <img  className="mx-auto h-[90px] w-auto" alt="Unach Logo" />
@@ -40,7 +40,7 @@ function Dash() {
             <LinkDashboard options={2} lines={["Producción científica, ","tecnológica y de", "innovación"]} name1={"Cientifica"} name2={"Tecnológica y de innovación"} to={"/cientifica"} to2={"/tecnoInnova"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={3} lines={["Formación de personas"]} name1={"Cursos"} name2={"Tesis"} name3={"Diplomados"} to={"/cursos"} to3={"/diplomados"}/>
+            <LinkDashboard options={2} lines={["Formación de personas"]} name1={"Cursos"} name2={"Diplomados"} to={"/cursos"} to2={"/diplomados"}/>
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Comunicación pública", "de la ciencia, tecnológica", "y de innovación"]}  to={"/pCongresos"} />
@@ -49,7 +49,7 @@ function Dash() {
             <LinkDashboard options={0} lines={["Vinculación"]} to={"/proyectosInvestigacion"} />
           </li>
           <li className="relative">
-            <LinkDashboard options={0} lines={["Evaluciones"]} to={"/evalucacioes"}/> 
+            <LinkDashboard options={0} lines={["Evaluciones"]} /* to={"/evalucacioes"} *//> 
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Premios y distinciones"]} to={"/distinciones"}/>
