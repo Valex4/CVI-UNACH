@@ -95,7 +95,7 @@ function FormGeneralData () {
                 <Form onSubmit={handleSubmit} className="space-y-2 mt-[100px]">
                   <div id="content-to-pdf">
                     <div className=" flex justify justify-center mb-5">
-                    <Title level={"h1"} text={"Experiencia Laboral"} />
+                    <Title level={"h1"} text={"Datos generales"} />
                     </div>
                     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         <WrapperInput onchange={handleChange} name={"curp"} type="text" mensaje="CURP" />
@@ -105,14 +105,14 @@ function FormGeneralData () {
                         <WrapperInput onchange={handleChange} name={"fecha"} type="date" mensaje="Fecha de nacimiento"  />
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">Sexo</label>
-                        <Select name='sexo' onChange={(selectedOption, _) => setFieldValue(`sexo`, selectedOption.value)} options={Sexo}/>
+                        <Select name='sexo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`sexo`, selectedOption.value)} options={Sexo}/>
                         </div>
                         <WrapperInput onchange={handleChange} name={"pais"} type="text" mensaje="País de nacimiento" />
                         <WrapperInput onchange={handleChange} name={"entidad"} type="text" mensaje="Entidad federativa"  />
                         <WrapperInput onchange={handleChange} name={"rfc"} type="text" mensaje="RFC"  />
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">Estado conyugal</label>
-                        <Select name='estado' onChange={(selectedOption, _) => setFieldValue(`estado`, selectedOption.value)} options={Estado}/>
+                        <Select name='estado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estado`, selectedOption.value)} options={Estado}/>
                         </div>
                         <WrapperInput onchange={handleChange} name={"nacionalidad"} type="text" mensaje="Nacionalidad" />
                         <WrapperInput onchange={handleChange} name={"numero"} type="text" mensaje="N° de CVU"  />
