@@ -49,7 +49,7 @@ function FormInnovacion() {
   const decisions = [
     {value:"si", label:"Si"},
     {value:"no", label:"No"},
-]
+] 
 
   return (
     <Formik
