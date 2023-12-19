@@ -1,7 +1,7 @@
 import React from 'react'
-import Title from "../atoms/Title";
+import Title from "../../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
+import WrapperInput from "../../../molecules/wrapperInput";
 import Swal from "sweetalert2";
 import Select from 'react-select';
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import Dash from '../components/templates/Dash'
-import FormCursos from '../components/organism/FormCursos'
+import FormCursos from '../components/organism/FormacionPersonas/FormCursos'
 
 
 function Cursos() {

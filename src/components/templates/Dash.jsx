@@ -28,10 +28,10 @@ function Dash() {
               <img src={logo} alt="Logo Unach" />
             </li>
           <li className="relative">
-            <LinkDashboard options={2} lines={["Datos Generales"]} name1={"Datos Generales"} name2={"Domicilio de Residencia"} to={"/datosGenerales"} to2={"/domicilioResidencia"}/>
+            <LinkDashboard options={0} lines={["Datos Generales"]} to={"/datosGenerales"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={2} lines={["Formación Academica"]} name1={"Grados Academicos"} name2={"Otro"} to={"/formacionAcademica/gradosAcademicos"} to2={"/formacionAcademicaOtros"}/>
+            <LinkDashboard options={0} lines={["Formación Academica"]} to={"/formacionAcademica"}/>
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Trayectoria Profesional"]} to={"/trayectoriaProfesional"}/>
@@ -40,16 +40,16 @@ function Dash() {
             <LinkDashboard options={2} lines={["Producción científica, ","tecnológica y de", "innovación"]} name1={"Cientifica"} name2={"Tecnológica y de innovación"} to={"/cientifica"} to2={"/tecnoInnova"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={2} lines={["Formación de personas"]} name1={"Cursos"} name2={"Diplomados"} to={"/cursos"} to2={"/diplomados"}/>
+            <LinkDashboard options={3} lines={["Formación de personas"]} name1={"Cursos"} name2={"Diplomados"} name3={"Tesis"} to={"/cursos"} to2={"/diplomados"} to3={"/tesis"}/>
           </li>
           <li className="relative">
-            <LinkDashboard options={0} lines={["Comunicación pública", "de la ciencia, tecnológica", "y de innovación"]}  to={"/pCongresos"} />
+            <LinkDashboard options={2} lines={["Comunicación pública", "de la ciencia, tecnológica", "y de innovación"]} name1={"Difusion"} name2={"Divulgación"}  to={"/difusion"} to2={"/divulgacion"}/>
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Vinculación"]} to={"/proyectosInvestigacion"} />
           </li>
           <li className="relative">
-            <LinkDashboard options={0} lines={["Evaluciones"]} /* to={"/evalucacioes"} *//> 
+            <LinkDashboard options={0} lines={["Evaluciones"]} to={"/evaluaciones"} /> 
           </li>
           <li className="relative">
             <LinkDashboard options={0} lines={["Premios y distinciones"]} to={"/distinciones"}/>

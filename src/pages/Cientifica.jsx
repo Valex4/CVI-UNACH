@@ -1,14 +1,20 @@
 import React from 'react'
 import Dash from '../components/templates/Dash'
-import FormReportesTecnicos from '../components/organism/FormReportesTecnicos'
-import FormDocumentosTrabajo from '../components/organism/FormDocumentosTrabajo'
+import FormReportesTecnicos from '../components/organism/ProduccionCTI/Cientifica/FormReportesTecnicos'
+import FormDocumentosTrabajo from '../components/organism/ProduccionCTI/Cientifica/FormDocumentosTrabajo'
+import FormCapitulosP from '../components/organism/ProduccionCTI/Cientifica/FormCapitulosP'
+import FormPArticulos from '../components/organism/ProduccionCTI/Cientifica/FormPArticulos'
+import FormPLibros from '../components/organism/ProduccionCTI/Cientifica/FormPLibros'
+import FormResenas from '../components/organism/ProduccionCTI/Cientifica/FormResenas'
+import FormMemorias from '../components/organism/ProduccionCTI/Cientifica/FormMemorias'
+
 import { useState } from 'react'
 import Title from '../components/atoms/Title'
 function Cientifica() {
   const [opcionSeleccionada, setOpcionSeleccionada] = useState('');
 
 
-  const renderTable = () =>{
+  const renderTableRT = () =>{
     return(
       <div className=" mx-auto mt-8 pl-8 pr-8 p-5 ">
                         <table className="min-w-full bg-white border-gray-300 drop-shadow-2xl  rounded-3xl ">
@@ -77,9 +83,24 @@ function Cientifica() {
   const renderFormulario = () => {
     switch (opcionSeleccionada) {
         case 'op1':
-          return(<FormReportesTecnicos/>);
+          return(
+          <>
+           <FormReportesTecnicos/>
+           {renderTableRT()}
+          </>
+          );
         case 'op2':
           return(<FormDocumentosTrabajo/>);
+        case 'op3':
+          return(<FormPArticulos/>);
+        case 'op4':
+          return(<FormPLibros/>);
+        case 'op5':
+          return(<FormCapitulosP/>);
+        case 'op6':
+          return(<FormMemorias/>);
+        case 'op7':
+          return(<FormResenas/>);
         default:
           setOpcionSeleccionada('op1')
           return(<FormReportesTecnicos/>);
@@ -95,13 +116,17 @@ function Cientifica() {
                         <nav className="mt-30">
                             <ul className="flex flex-row gap-5 item-center justify-center top-">
                             <li className={`cursor-pointer ${opcionSeleccionada === 'op1' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op1')}>Reportes Técnicos</li>
-                            <li className={`cursor-pointer ${opcionSeleccionada === 'op2' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op2')}>Documentos de trabajo</li>            
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op2' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op2')}>Documentos de trabajo</li>   
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op3' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op3')}>Publicación de articulos</li> 
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op4' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op4')}>Publicacion de libros</li> 
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op5' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op5')}>Capitulos publicados</li> 
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op6' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op6')}>Memorias</li> 
+                            <li className={`cursor-pointer ${opcionSeleccionada === 'op7' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op7')}>Reseñas</li>          
                             </ul>
                         </nav>
                     </header>
                 </div>
                 {renderFormulario()}
-                {renderTable()}
             </div>
         </main>
     </>

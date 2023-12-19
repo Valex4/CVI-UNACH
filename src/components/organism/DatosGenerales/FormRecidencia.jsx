@@ -1,9 +1,9 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
+import WrapperInput from "../../molecules/wrapperInput";
 import Swal from "sweetalert2";
-import Button from "../atoms/Button";
-import Title from "../atoms/Title";
+import Button from "../../atoms/Button";
+import Title from "../../atoms/Title";
 
 export default function FormRecidencia() {
   return (
@@ -55,7 +55,7 @@ export default function FormRecidencia() {
         }) => (
           <Form
             onSubmit={handleSubmit}
-            className="space-y-2 mt-[100px] py-8 pl-8 pr-8"
+            className="space-y-2 mt-[10px] py-8 pl-8 pr-8"
           >
             <div className="flex flex-col gap-8">
                 <div className="flex flex-row items-center justify-center">

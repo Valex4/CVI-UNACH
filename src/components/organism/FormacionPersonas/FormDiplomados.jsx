@@ -1,11 +1,11 @@
 import React from 'react'
-import Title from "../atoms/Title";
+import Title from "../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
+import WrapperInput from "../../molecules/wrapperInput";
 import Swal from "sweetalert2";
 import Select from 'react-select';
 
-function FormCursos() {
+function FormDiplomados() {
   const escolaridad = [
     { value: "preparatoria", label: "Preparatoria"},
     { value: "licenciatura", label: "Licenciatura"},
@@ -28,11 +28,11 @@ function FormCursos() {
     <>
     <Formik
         initialValues={{
+          institucion:"",
+          nombreDiplomado:"",
           nombreCurso:"",
+          anio:"",
           horas:"",
-          fechaInicio:"",
-          fechaFin:"",
-          escolaridad:"",
           area:"",
           campo:"",
           disciplina:"",
@@ -82,41 +82,44 @@ function FormCursos() {
             className="space-y-2 mt-[10px] py-8 pl-8 pr-8"
           >
             <div id="padre" className="flex flex-col gap-8">
-              <Title level={"h1"} text={"Cursos impartidos"} />
+              <Title level={"h1"} text={"Diplomados impartidos"} />
+
+              <div className='grid grid-cols-2 gap-5'>
               <WrapperInput
-                mensaje={"Nombre del curso o asignatura: "}
+                mensaje={"Institución"}
                 type={"text"}
-                name={"nombreCurso"}
+                name={"institucion"}
                 onchange={handleChange}
-              />
+                />
+              <WrapperInput
+                mensaje={"Nombre del diplomado"}
+                type={"text"}
+                name={"nombreDiplomado"}
+                onchange={handleChange}
+                />
+                </div>
+
               <div id="fechas" className="grid grid-cols-3 gap-5">
                 <WrapperInput
-                  mensaje={"Horas totales por curso"}
-                  type={"text "}
+                  mensaje={"Nombre del curso o asignatura"}
+                  type={"text"}
+                  name={"nombreCurso"}
+                  onchange={handleChange}
+                />
+                <WrapperInput
+                  mensaje={"Año"}
+                  type={"text"}
+                  name={"anio"}
+                  onchange={handleChange}
+                />
+                <WrapperInput
+                  mensaje={"Horas totales"}
+                  type={"text"}
                   name={"horas"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Fecha inicio"}
-                  type={"date"}
-                  name={"fechaInicio"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Fecha fin"}
-                  type={"date"}
-                  name={"fechaFin"}
                   onchange={handleChange}
                 />
               </div>
               
-              <div className='grid grid-cols-3 gap-3'>
-              <div className='flex flex-col gap-2'>
-              <label className="block text-sm font-medium  text-gray-900">Nivel de escolaridad</label>
-              <Select className='w-[98%]' name='escolaridad' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`escolaridad`, selectedOption.value)} options={escolaridad} />
-                </div>
-              </div>
-
               <Title level={"h4"} text={"Área del conocimiento"} />
               <div id="ultimos" className="grid grid-cols-3 gap-5">
                 <section className='mt-1 flex flex-col gap-2'>
@@ -155,8 +158,9 @@ function FormCursos() {
           </Form>
         )}
       </Formik>
-   </>
+
+    </>
   )
 }
 
-export default FormCursos
+export default FormDiplomados
