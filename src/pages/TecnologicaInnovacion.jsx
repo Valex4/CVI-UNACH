@@ -1,9 +1,10 @@
 import Dash from "../components/templates/Dash";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import FormDesarrolloSoftware from '../components/organism/FormDesarrolloSoftware'
-import FormDesarrollosT from "../components/organism/FormDesarrollosT";
-import FormInnovacion from "../components/organism/FormInnovacion"
+import FormDesarrolloSoftware from '../components/organism/ProduccionCTI/TecnologicaInnovacion/FormDesarrolloSoftware'
+import FormDesarrollosT from "../components/organism/ProduccionCTI/TecnologicaInnovacion/FormDesarrollosT";
+import FormInnovacion from "../components/organism/ProduccionCTI/TecnologicaInnovacion/FormInnovacion"
+import FormPatentes from "../components/organism/ProduccionCTI/TecnologicaInnovacion/FormPatentes"
 import Title from "../components/atoms/Title";
 
 
@@ -221,6 +222,12 @@ function TecnologicaInnovacion() {
                     {renderTableSoftware()}
                 </>
               );
+            case 'op4':
+                return(
+                    <>
+                    <FormPatentes/>
+                    </>
+                )
             default:
               setOpcionSeleccionada('op1')
           } 
@@ -236,7 +243,8 @@ function TecnologicaInnovacion() {
                                 <ul className="flex flex-row gap-5 item-center justify-center top-">
                                 <li className={`cursor-pointer ${opcionSeleccionada === 'op1' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op1')}>Desarrollos Tecnológicos</li>
                                 <li className={`cursor-pointer ${opcionSeleccionada === 'op2' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op2')}>Innovación</li>   
-                                <li className={`cursor-pointer ${opcionSeleccionada === 'op3' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op3')}>Desarrollo de Software</li>           
+                                <li className={`cursor-pointer ${opcionSeleccionada === 'op3' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op3')}>Desarrollo de Software</li>    
+                                <li className={`cursor-pointer ${opcionSeleccionada === 'op4' ? 'text-[#D2A92D]' : ''}`} onClick={() => setOpcionSeleccionada('op4')}>Patentes</li>         
                                 </ul>
                             </nav>
                         </header>

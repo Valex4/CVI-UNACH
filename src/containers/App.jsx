@@ -12,11 +12,14 @@ import Vinculacion from "../pages/Vinculacion";
 import Difusion from "../pages/Difusion";
 import Cursos from "../pages/Cursos";
 import Diplomados from "../pages/Diplomados";
+import Tesis from "../pages/Tesis";
 import Distinciones from "../pages/Distinciones";
 import Idiomas from "../pages/Idiomas";
+import Divulgacion from "../pages/Divulgacion";
+import Evaluaciones from "../pages/Evaluaciones";
 
 import "../assets/styles/index.css"
-import DomicilioResidencia from "../pages/DomicilioResidencia";
+
 
 
 function App() {
@@ -27,19 +30,20 @@ function App() {
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
-                    <Route path="/formacionAcademica/gradosAcademicos" element={<FormacionAcademica/>}/>
+                    <Route path="/formacionAcademica" element={<FormacionAcademica/>}/>
                     <Route path="/tecnoInnova" element={<TecnologicaInnovacion/>}/>
-                    <Route path="/domicilioResidencia" element={<DomicilioResidencia/>} />
                     <Route path="/trayectoriaProfesional" element={<TrayectoriaProfesional/>}/>
                     <Route path="/datosGenerales" element={<GeneralData/>}/>
                     <Route path="/cientifica" element={<Cientifica/>}/>
                     <Route path="/proyectosInvestigacion" element={<Vinculacion/>}/>
-                    <Route path="/pCongresos" element={<Difusion/>}/>
+                    <Route path="/difusion" element={<Difusion/>}/>
+                    <Route path="/divulgacion" element={<Divulgacion/>}/>
+                    <Route path="/evaluaciones" element={<Evaluaciones/>}/>
                     <Route path="/cursos" element={<Cursos/>}/>
                     <Route path="/diplomados" element={<Diplomados/>}/>
+                    <Route path="/tesis" element={<Tesis/>}/>
                     <Route path="/distinciones" element={<Distinciones/>}/>
                     <Route path="/idiomas" element={<Idiomas/>}/>
-
                 </Routes>
             </BrowserRouter>
         </>

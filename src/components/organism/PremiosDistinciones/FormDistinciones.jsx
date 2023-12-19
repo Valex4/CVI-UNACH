@@ -1,15 +1,21 @@
-import React from "react";
-import Title from "../atoms/Title";
+import React from 'react'
+import Title from "../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
-import { useState } from "react";
+import WrapperInput from "../../molecules/wrapperInput";
 import Swal from "sweetalert2";
-import { NavLink } from "react-router-dom";
 
-function FormExperiencia_1({des}) {
+function FormDistinciones() {
+
   return (
+    <>
     <Formik
-        initialValues={des}
+        initialValues={{
+          nombreDistincion:"",
+          institucion:"",
+          pais:"",
+          fecha:"",
+          descripcion:""
+        }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
@@ -47,75 +53,54 @@ function FormExperiencia_1({des}) {
           handleSubmit,
           handleChange,
           isSubmitting,
-          setFieldValue
         }) => (
           <Form
             onSubmit={handleSubmit}
             className="space-y-2 mt-[10px] py-8 pl-8 pr-8"
           >
             <div id="padre" className="flex flex-col gap-8">
-              <Title level={"h1"} text={"Experiencia Laboral"} />
+              <Title level={"h1"} text={"Distinciones no CONACYT"} />
+
+              <div className='grid grid-cols-1 gap-5'>
               <WrapperInput
-                mensaje={"Institución/Empresa"}
+                mensaje={"Nombre de la distinción"}
+                type={"text"}
+                name={"nombreDistincion"}
+                onchange={handleChange}
+                />
+              <WrapperInput
+                mensaje={"Institución que otorgó el premio o la distinción"}
                 type={"text"}
                 name={"institucion"}
                 onchange={handleChange}
-              />
-              <Title level={"h4"} text={"Periodo"} />
+                />
+
+                
+
+
               <div id="fechas" className="grid grid-cols-2 gap-5">
-                <WrapperInput
-                  mensaje={"Inicio"}
-                  type={"date"}
-                  name={"inicio"}
-                  onchange={handleChange}
+              <WrapperInput
+                mensaje={"País"}
+                type={"text"}
+                name={"pais"}
+                onchange={handleChange}
                 />
                 <WrapperInput
-                  mensaje={"Fin"}
+                  mensaje={"Fecha"}
                   type={"date"}
-                  name={"fin"}
+                  name={"fecha"}
                   onchange={handleChange}
-                />
-              </div>
+                  />
+                </div>
 
               <WrapperInput
-                mensaje={"Nombre del puesto/Nombramiento"}
-                type={"text"}
-                name={"puesto"}
-                onchange={handleChange}
-              />
-              <WrapperInput
-                mensaje={"Logros"}
-                type={"text"}
-                name={"logros"}
-                onchange={handleChange}
-              />
-              <Title level={"h4"} text={"Área del conocimiento del puesto"} />
-              <div id="ultimos" className="grid grid-cols-3 gap-5">
-                <WrapperInput
-                  mensaje={"Áreas"}
+                  mensaje={"Descripción premio distinción"}
                   type={"text"}
-                  name={"area"}
+                  name={"descripcion"}
                   onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Campos"}
-                  type={"text"}
-                  name={"campo"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Disciplina"}
-                  type={"text"}
-                  name={"disciplina"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Subdisciplina"}
-                  type={"text"}
-                  name={"subdisciplina"}
-                  onchange={handleChange}
-                />
+                  />
               </div>
+    
               <div className="mt-3">
                 <button
                   type="submit"
@@ -128,7 +113,8 @@ function FormExperiencia_1({des}) {
           </Form>
         )}
       </Formik>
+    </>
   )
 }
 
-export default FormExperiencia_1
+export default FormDistinciones

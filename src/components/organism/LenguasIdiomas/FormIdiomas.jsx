@@ -1,11 +1,11 @@
 import React from 'react'
 import { Formik, Form } from 'formik'
-import Title from '../atoms/Title';
+import Title from '../../atoms/Title';
 import Swal from 'sweetalert2';
 import Select from 'react-select';
-import WrapperInput from '../molecules/wrapperInput';
+import WrapperInput from '../../molecules/wrapperInput';
 import { useState, useEffect } from 'react';
-import LanguagesFile from '../../assets/json/languages.json'
+import LanguagesFile from '../../../assets/json/languages.json'
 
 
 function FormIdiomas() {

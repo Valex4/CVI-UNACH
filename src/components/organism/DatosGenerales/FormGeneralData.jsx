@@ -3,10 +3,10 @@ import { Formik, Form } from "formik";
 import  html2pdf  from "html2pdf.js";
 import Swal from "sweetalert2";
 import Select from 'react-select'
-import WrapperInput from "../molecules/wrapperInput";
-import WrapperTable from "../molecules/WrapperTable";
-import Title from "../atoms/Title";
-import Button from "../atoms/Button";
+import WrapperInput from "../../molecules/wrapperInput";
+import WrapperTable from "../../molecules/WrapperTable";
+import Title from "../../atoms/Title";
+import Button from "../../atoms/Button";
 
 
 
@@ -92,7 +92,7 @@ function FormGeneralData () {
         
         >
             {({values, errors, touched, handleSubmit, handleChange, handleBlur, isSubmitting, setFieldValue}) => (
-                <Form onSubmit={handleSubmit} className="space-y-2 mt-[100px]">
+                <Form onSubmit={handleSubmit} className="space-y-2 mt-[10px] py-8 pl-8 pr-8">
                   <div id="content-to-pdf">
                     <div className=" flex justify justify-center mb-5">
                     <Title level={"h1"} text={"Datos generales"} />

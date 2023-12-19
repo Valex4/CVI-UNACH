@@ -1,42 +1,38 @@
 import React from 'react'
-import Title from "../atoms/Title";
-import { Formik, Form } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
-import Swal from "sweetalert2";
+import { Formik, Form } from 'formik'
+import Title from '../../atoms/Title';
+import Swal from 'sweetalert2';
 import Select from 'react-select';
+import WrapperInput from '../../molecules/wrapperInput';
+function FormVinculacion() {
+    const types = [
+        {value:"consultoria", label:"Consultoría"},
+        {value:"investigacion", label:"Investigación"},
+        {value:"planesDeNegocio", label:"Planes de negocio"},
+    ]
 
-function FormDiplomados() {
-  const escolaridad = [
-    { value: "preparatoria", label: "Preparatoria"},
-    { value: "licenciatura", label: "Licenciatura"},
-    { value: "especialidad", label: "Especialidad"},
-    { value: "maestria", label: "Maestría"},
-    { value: "doctorado", label: "Doctorado"},
-  ]
-
-  const areas = [
-    {value: "Biología y química", label:"Biología y química"},
-    {value:"Ciencias Sociales", label:"Ciencias Sociales"},
-    {value:"Ciencias agropecuarias y Biotecnología", label:"Ciencias agropecuarias y Biotecnología"},
-    {value:"Ciencias físico matemático y ciencias de la tierra", label:"Ciencias físico matemático y ciencias de la tierra"},
-    {value:"Humanidades y ciencias de la conducta", label:"Humanidades y ciencias de la conducta"},
-    {value:"Ingeniería y tecnología", label:"Ingeniería y tecnología"},
-    {value:"Mediciona y ciencias de la salud", label:"Mediciona y ciencias de la salud"},
-]
-
+    const areas = [
+        {value: "Biología y química", label:"Biología y química"},
+        {value:"Ciencias Sociales", label:"Ciencias Sociales"},
+        {value:"Ciencias agropecuarias y Biotecnología", label:"Ciencias agropecuarias y Biotecnología"},
+        {value:"Ciencias físico matemático y ciencias de la tierra", label:"Ciencias físico matemático y ciencias de la tierra"},
+        {value:"Humanidades y ciencias de la conducta", label:"Humanidades y ciencias de la conducta"},
+        {value:"Ingeniería y tecnología", label:"Ingeniería y tecnología"},
+        {value:"Mediciona y ciencias de la salud", label:"Mediciona y ciencias de la salud"},
+    ]
   return (
-    <>
     <Formik
         initialValues={{
-          institucion:"",
-          nombreDiplomado:"",
-          nombreCurso:"",
-          anio:"",
-          horas:"",
-          area:"",
-          campo:"",
-          disciplina:"",
-          subdisciplina:""
+            nombreProyecto:"",
+            tipoProyecto:"",
+            inicio:"",
+            fin:"",
+            institucion:"",
+            logros:"",
+            area:"",
+            campo:"",
+            disciplina:"",
+            subdisciplina:""
         }}
         onSubmit={async (values, actions) => {
           try {
@@ -82,49 +78,49 @@ function FormDiplomados() {
             className="space-y-2 mt-[10px] py-8 pl-8 pr-8"
           >
             <div id="padre" className="flex flex-col gap-8">
-              <Title level={"h1"} text={"Diplomados impartidos"} />
-
-              <div className='grid grid-cols-2 gap-5'>
+              <Title level={"h1"} text={"Proyectos investigación"} />
               <WrapperInput
-                mensaje={"Institución"}
+                mensaje={"Nombre del proyecto:"}
                 type={"text"}
-                name={"institucion"}
+                name={"nombreProyecto"}
                 onchange={handleChange}
-                />
-              <WrapperInput
-                mensaje={"Nombre del diplomado"}
-                type={"text"}
-                name={"nombreDiplomado"}
-                onchange={handleChange}
-                />
-                </div>
-
-              <div id="fechas" className="grid grid-cols-3 gap-5">
+              />
+                <div id="fechas" className="grid grid-cols-3 gap-5">
+                <section className='mt-1 flex flex-col gap-2'>
+                    <label className="block text-sm font-medium  text-gray-900 first-letter:">Tipo de proyecto:</label>
+                    <Select name='tipoProyecto' className='z-40' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`tipoProyecto`, selectedOption.value)} options={types} />
+                </section>
                 <WrapperInput
-                  mensaje={"Nombre del curso o asignatura"}
-                  type={"text"}
-                  name={"nombreCurso"}
+                  mensaje={"Inicio:"}
+                  type={"date"}
+                  name={"inicio"}
                   onchange={handleChange}
                 />
                 <WrapperInput
-                  mensaje={"Año"}
-                  type={"text"}
-                  name={"anio"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Horas totales"}
-                  type={"text"}
-                  name={"horas"}
+                  mensaje={"Fin:"}
+                  type={"date"}
+                  name={"fin"}
                   onchange={handleChange}
                 />
               </div>
-              
+
+              <WrapperInput
+                mensaje={"Institución: "}
+                type={"text"}
+                name={"institucion"}
+                onchange={handleChange}
+              />
+              <WrapperInput
+                mensaje={"Logros:"}
+                type={"text"}
+                name={"logros"}
+                onchange={handleChange}
+              />
               <Title level={"h4"} text={"Área del conocimiento"} />
               <div id="ultimos" className="grid grid-cols-3 gap-5">
                 <section className='mt-1 flex flex-col gap-2'>
                     <label className="block text-sm font-medium  text-gray-900 first-letter:">Área:</label>
-                    <Select name='area' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
+                    <Select name='area' className='z-40' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
                 </section>
                 <WrapperInput
                   mensaje={"Campo:"}
@@ -145,7 +141,6 @@ function FormDiplomados() {
                   onchange={handleChange}
                 />
               </div>
-
               <div className="mt-3">
                 <button
                   type="submit"
@@ -158,9 +153,7 @@ function FormDiplomados() {
           </Form>
         )}
       </Formik>
-
-    </>
   )
 }
 
-export default FormDiplomados
+export default FormVinculacion

@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import WrapperInput from "../molecules/wrapperInput";
+import WrapperInput from "../../../molecules/wrapperInput";
 import Swal from "sweetalert2";
-import Title from "../atoms/Title";
+import Title from "../../../atoms/Title";
 import Select from "react-select";
-import Button from "../atoms/Button";
+import Button from "../../../atoms/Button";
 
 function FormDesarrollosT() {
   const recibioapoyo = [
