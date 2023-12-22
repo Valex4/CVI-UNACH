@@ -74,10 +74,6 @@ function FormDistinciones() {
                 name={"institucion"}
                 onchange={handleChange}
                 />
-
-                
-
-
               <div id="fechas" className="grid grid-cols-2 gap-5">
               <WrapperInput
                 mensaje={"País"}
@@ -92,13 +88,10 @@ function FormDistinciones() {
                   onchange={handleChange}
                   />
                 </div>
-
-              <WrapperInput
-                  mensaje={"Descripción premio distinción"}
-                  type={"text"}
-                  name={"descripcion"}
-                  onchange={handleChange}
-                  />
+                <section className='mt-1 flex flex-col gap-2'>
+                  <label className="block text-sm font-medium  text-gray-900 first-letter:">Descripción premio distinción:</label>
+                  <textarea name="descripcion" placeholder='Descripción' cols="10" rows="3" onChange={handleChange} className='textareaStyle'></textarea>
+                </section>
               </div>
     
               <div className="mt-3">

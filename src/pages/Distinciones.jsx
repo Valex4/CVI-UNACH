@@ -3,9 +3,49 @@ import { useState } from 'react';
 import FormDistinciones from '../components/organism/PremiosDistinciones/FormDistinciones';
 import FormDistincionesConacyt from '../components/organism/PremiosDistinciones/FormDistincionesConacyt';
 import Dash from '../components/templates/Dash';
+import Title from '../components/atoms/Title';
 
 function Distinciones() {
   const [opcionSeleccionada, setOpcionSeleccionada] = useState('');
+
+  const renderTableDC = () => {
+    return (
+      <div className=" mx-auto mt-8 pl-8 pr-8 p-5 ">
+        <table className="min-w-full bg-white border-gray-300 drop-shadow-2xl  rounded-3xl ">
+          <thead className=" w-full h-10 ">
+            <tr className="rounded-lg">
+              <th className="p-2"><Title level="h3" text="Distinciones" /> </th>
+            </tr>
+          </thead>
+          <thead>
+            <tr className=" bg-[#667DA3] text-white">
+              <th className="py-2 px-4 border-b text-left">Nombre de la distinción</th>
+              <th className="py-2 px-4 border-b text-left">Año</th>
+              <th className="py-2 px-4 border-b text-left">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="py-2 px-4 border-b">Candidato</td>
+              <td className="py-2 px-4 border-b">2023</td>
+              <td className="py-2 px-4 border-b">
+                <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
+                  <span className="material-icons-sharp">
+                    edit
+                  </span>
+                </button>
+                <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2 hover:bg-red-600 ">
+                  <span className="material-symbols-outlined">
+                    delete
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
   const renderFormulario = () => {
     switch (opcionSeleccionada) {
@@ -13,13 +53,13 @@ function Distinciones() {
         return (
           <>
             <FormDistincionesConacyt />
+            {renderTableDC()}
           </>
         );
       case 'op2':
         return (
           <>
             <FormDistinciones />
-
           </>
         );
       default:

@@ -25,7 +25,7 @@ function FormExperienciaLaboral() {
     <Formik
     initialValues={{
       desempeno: "",
-      institucion: "CONSEJO NACIONAL DE CIENCIA Y TECNOLOGIA (CONACYT)",
+      institucion: "",
       institucionCatedra: "",
       inicio: "",
       fin: "",
@@ -91,7 +91,7 @@ function FormExperienciaLaboral() {
                      mensaje={"Institución/Empresa"}
                      type={"text"}
                      name={"institucion"}
-                     dato={values.institucion}
+                     dato={"CONSEJO NACIONAL DE CIENCIA Y TECNOLOGIA (CONACYT)"}
                      activo={true}
                      onchange={handleChange}
                    />
@@ -119,7 +119,7 @@ function FormExperienciaLaboral() {
                 <label className="block text-sm font-medium  text-gray-900 first-letter:">¿Es su empleo actual?</label>
                 <Select name='actual' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`actual`, selectedOption.value)} options={decisions} />
           </section>
-          {values.actual === "Si" ? (
+          {values.actual === "No" ? (
             <div id="fechas" className="grid grid-cols-2 gap-5">
             <WrapperInput
               mensaje={"Inicio"}
