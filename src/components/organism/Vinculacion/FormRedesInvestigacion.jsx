@@ -113,8 +113,6 @@ function FormRedesInvestigacion() {
                     <WrapperInput onchange={handleChange} name="disciplina" mensaje="Disciplina" type="text" />
                     <WrapperInput onchange={handleChange} name="subdisciplina" mensaje="Subdisciplina" type="text" />
                   </div>
-
-                  <Title level="h4" text="*Para poder agregar Colaborador(es), es necesario guardar la información del formulario" />
               </div>
 
               <div>
