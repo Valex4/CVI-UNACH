@@ -72,6 +72,89 @@ function Vinculacion() {
     )
   }
 
+  const renderTableRedTematica = () =>{
+    return(
+      <div className=" mx-auto mt-8 pl-8 pr-8 p-5 ">
+                        <table className="min-w-full bg-white border-gray-300 drop-shadow-2xl  rounded-3xl ">
+                        <thead className=" w-full h-10 ">
+                        <tr className="rounded-lg">
+                            <th className="p-2"><Title level="h3" text="Redes temáticas" /> </th>
+                        </tr>
+                        </thead>
+                        <thead>
+                        <tr className=" bg-[#667DA3] text-white">
+                            <th className="py-2 px-4 border-b text-left">Red temática</th>
+                            <th className="py-2 px-4 border-b text-left">Fecha de ingreso</th>
+                            <th className="py-2 px-4 border-b text-left">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td className="py-2 px-4 border-b"></td>
+                            <td className="py-2 px-4 border-b"></td>
+                            <td className="py-2 px-4 border-b">
+                            <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
+                            <span className="material-icons-sharp">
+                                edit
+                                </span>
+                            </button>
+                            <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2 hover:bg-red-600 ">
+                            <span className="material-symbols-outlined">
+                            delete
+                            </span>
+                            </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    
+                    </table>
+                    </div>
+    )
+  }
+
+  const renderTableInvestigacion = () =>{
+    return(
+      <div className=" mx-auto mt-8 pl-8 pr-8 p-5 ">
+                        <table className="min-w-full bg-white border-gray-300 drop-shadow-2xl  rounded-3xl ">
+                        <thead className=" w-full h-10 ">
+                        <tr className="rounded-lg">
+                            <th className="p-2"><Title level="h3" text="Redes de investigación" /> </th>
+                        </tr>
+                        </thead>
+                        <thead>
+                        <tr className=" bg-[#667DA3] text-white">
+                            <th className="py-2 px-4 border-b text-left">Red</th>
+                            <th className="py-2 px-4 border-b text-left">Fecha de ingreso</th>
+                            <th className="py-2 px-4 border-b text-left">Fecha de creación</th>
+                            <th className="py-2 px-4 border-b text-left">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td className="py-2 px-4 border-b"></td>
+                            <td className="py-2 px-4 border-b"></td>
+                            <td className="py-2 px-4 border-b"></td>
+                            <td className="py-2 px-4 border-b">
+                            <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
+                            <span className="material-icons-sharp">
+                                edit
+                                </span>
+                            </button>
+                            <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2 hover:bg-red-600 ">
+                            <span className="material-symbols-outlined">
+                            delete
+                            </span>
+                            </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    
+                    </table>
+                    </div>
+    )
+  }
+
+
   const renderFormulario = () => {
     switch (opcionSeleccionada) {
         case 'op1':
@@ -84,14 +167,14 @@ function Vinculacion() {
             return(
             <>
                 <FormRedesTematicas/>
-          
+                {renderTableRedTematica()}
             </>      
             );
         case 'op3':
           return(
             <>
                 <FormRedesInvestigacion/>
-                
+                {renderTableInvestigacion()}
             </>
           );
         case 'op4':
