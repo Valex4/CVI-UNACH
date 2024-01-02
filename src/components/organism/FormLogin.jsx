@@ -2,8 +2,12 @@ import WrapperInput from "../molecules/wrapperInput";
 import { Formik, Form } from "formik";
 import Swal from "sweetalert2";
 import logo from "../../assets/images/logo.png"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { loginUser } from "../../api/Routes";
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 function FormLogin() {
+    const navigate = useNavigate()
     return ( 
         <>
 
@@ -26,14 +30,19 @@ function FormLogin() {
             }}
             onSubmit={async(values, actions) =>{
                 try{
-
-                    //Descomentar lo siguiente cuando este lo del axios y funcione el back
-
-                    /* const response = await loginUser(values);
-
+                    const response = await loginUser(values);
                     if(response.status === 200){
+                        Swal.fire({
+                            icon: "success",
+                            title: "Bienvenido",
+                            showConfirmButton: false,
+                            timer: 1500,
+                          });
 
-
+                        const token = response.data.token;
+                        Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'None' });
+                        console.log(response.data.token)
+                        navigate("/home")
                     }else{
                         Swal.fire({
                             icon: "error",
@@ -41,19 +50,10 @@ function FormLogin() {
                             text: "Intente de nuevo",
                             footer: 'Si el problema persiste intentelo mas tarde'
                           });
-                          console.log(error);
-                    } */
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Bienvenido",
-                        showConfirmButton: false,
-                        timer: 1500,
-                      });
-                    console.table(values)
-
+                    } 
                 }catch(error){
-
+                    alert("Error: " + error)
+                    console.log(error);
                 }
             }} 
         
