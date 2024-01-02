@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import  html2pdf  from "html2pdf.js";
 import Swal from "sweetalert2";
@@ -7,24 +7,44 @@ import WrapperInput from "../../molecules/wrapperInput";
 import WrapperTable from "../../molecules/WrapperTable";
 import Title from "../../atoms/Title";
 import Button from "../../atoms/Button";
+import { getUser } from "../../../api/Routes";
+import Cookies from 'js-cookie';
 
 
 
 function FormGeneralData () {
+  const [Datos, setDatos] = useState([])
+  useEffect(() => {
+    const getData = async() =>{
+      const token = Cookies.get('token');
+      console.log(token);
+      try{
+        const response = await getUser(token);
+        console.log("Estamos obteniendo la data el usuario")
+        console.table(response.data)
+        setDatos(response.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getData();
+  }, [])
+  
   
   const Sexo = [
-    { value: 'femenino', label: 'Femenino' },
-    { value: 'masculino', label: 'Masculino' }
+    { value: 'FEMENINO', label: 'FEMENINO' },
+    { value: 'MASCULINO', label: 'MASCULINO' },
+    { value: 'SIN ESPECIFICAR', label: 'SIN ESPECIFICAR' },
   ]
   
   const Estado = [
-    { value: 'casado', label: 'Casado(a)' },
-    { value: 'divorciado', label: 'Divorciado(a)' },
-    { value: 'separado', label: 'Separado(a)' },
-    { value: 'soltero', label: 'Soltero(a)' },
-    { value: 'unionLibre', label: 'Unión Libre' },
-    { value: 'viudo', label: 'Viudo(a)' },
-    { value: 'contratoDeConvivencia', label: 'Contrato de convivnecia' }
+    { value: 'CASADO', label: 'CASADO' },
+    { value: 'DIVORCIADO', label: 'DIVORCIADO' },
+    { value: 'SEPARADO', label: 'SEPARADO' },
+    { value: 'SOLTERO', label: 'SOLTERO' },
+    { value: 'UNION LIBRE', label: 'UNION LIBRE' },
+    { value: 'VIUDO', label: 'VIUDO' },
+    { value: 'CONTRATOS DE CONVIVENCIA', label: 'CONTRATOS DE CONVIVENCIA' }
   ]
 
   const handlerClickAgregar = () =>{
@@ -51,6 +71,11 @@ function FormGeneralData () {
     }
 
   }
+
+  const indexEstadoConyugal = Estado.findIndex((option) => option.value === Datos.estado_conyugal);
+
+  console.log('Índice de estado conyugal:', indexEstadoConyugal);
+
     return ( 
     <>
              <Formik
@@ -64,7 +89,7 @@ function FormGeneralData () {
                 pais: "",
                 entidad: "",
                 rfc: "",
-                estado: "",
+                estado:"",
                 nacionalidad: "",
                 numero: "",
                 tipo: "",
@@ -98,24 +123,24 @@ function FormGeneralData () {
                     <Title level={"h1"} text={"Datos generales"} />
                     </div>
                     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        <WrapperInput onchange={handleChange} name={"curp"} type="text" mensaje="CURP" />
-                        <WrapperInput onchange={handleChange} name={"nombre"} type="text" mensaje="Nombre" />
-                        <WrapperInput onchange={handleChange} name={"papellido"} type="text" mensaje="Primer apellido" />
-                        <WrapperInput onchange={handleChange} name={"sapellido"} type="text" mensaje="Segundo apellido" />
-                        <WrapperInput onchange={handleChange} name={"fecha"} type="date" mensaje="Fecha de nacimiento"  />
+                        <WrapperInput onchange={handleChange} name={"curp"} type="text" mensaje="CURP" dato={Datos.curp} activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"nombre"} type="text" mensaje="Nombre" dato={Datos.nombre} activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"papellido"} type="text" mensaje="Primer apellido" dato={Datos.primer_apellido} activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"sapellido"} type="text" mensaje="Segundo apellido" dato={Datos.segundo_apellido}  activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"fecha"} type="date" mensaje="Fecha de nacimiento" dato={Datos.fecha_de_nacimiento}  activo="true"/>
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">Sexo</label>
-                        <Select name='sexo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`sexo`, selectedOption.value)} options={Sexo}/>
+                        <Select name='sexo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`sexo`, selectedOption.value)} options={Sexo} value={Sexo.filter(option => option.label === `${Datos.sexo}`)} isDisabled="true"/>
                         </div>
-                        <WrapperInput onchange={handleChange} name={"pais"} type="text" mensaje="País de nacimiento" />
-                        <WrapperInput onchange={handleChange} name={"entidad"} type="text" mensaje="Entidad federativa"  />
-                        <WrapperInput onchange={handleChange} name={"rfc"} type="text" mensaje="RFC"  />
+                        <WrapperInput onchange={handleChange} name={"pais"} type="text" mensaje="País de nacimiento" dato={Datos.pais}   activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"entidad"} type="text" mensaje="Entidad federativa" dato={Datos.entidad}  activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"rfc"} type="text" mensaje="RFC" dato={Datos.rfc}   />
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">Estado conyugal</label>
-                        <Select name='estado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estado`, selectedOption.value)} options={Estado}/>
+                        <Select name='estado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estado`, selectedOption.value || '')} defaultValue={Estado[indexEstadoConyugal]} options={Estado}/>
                         </div>
-                        <WrapperInput onchange={handleChange} name={"nacionalidad"} type="text" mensaje="Nacionalidad" />
-                        <WrapperInput onchange={handleChange} name={"numero"} type="text" mensaje="N° de CVU"  />
+                        <WrapperInput onchange={handleChange} name={"nacionalidad"} type="text" mensaje="Nacionalidad" dato={Datos.nacionalidad}  activo="true"/>
+                        <WrapperInput onchange={handleChange} name={"numero"} type="text" mensaje="N° de CVU" dato={Datos.cvi}   activo="true"/>
                         <WrapperInput onchange={handleChange} name={"tipo"} type="text" mensaje="Tipo de beneficio"  />
                     </div>
                     
