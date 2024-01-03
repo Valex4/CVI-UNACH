@@ -52,7 +52,6 @@ function FormGeneralData () {
   }
 
   const handlerClickImprimir = async () =>{
-    Swal.fire("Imprimiendo JAJAJASJ!");
 
     const content = document.getElementById('content-to-pdf');
 
@@ -82,16 +81,16 @@ function FormGeneralData () {
             initialValues={{
                 curp: "",
                 nombre: "",
-                papellido: "",
-                sapellido: "",
-                fecha: "",
+                primer_apellido: "",
+                segundo_apellido: "",
+                fecha_de_nacimiento: "",
                 sexo: "",
                 pais: "",
                 entidad: "",
                 rfc: "",
-                estado:"",
+                estado_conyugal:"",
                 nacionalidad: "",
-                numero: "",
+                cvi: "",
                 tipo: "",
                 orc: "",
                 idthomsom: "",
