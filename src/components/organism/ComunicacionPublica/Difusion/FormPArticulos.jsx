@@ -3,8 +3,9 @@ import WrapperInput from "../../../molecules/wrapperInput";
 import Title from "../../../atoms/Title";
 import Swal from "sweetalert2";
 import Select from "react-select";
-
-import { Formik, Form } from "formik";
+import { createPublicacionArticulos } from "../../../../api/ComunicacionPublica/Routes";
+import { Formik, Form, ErrorMessage } from "formik";
+import * as Yup from 'yup';
 
 function FormPArticulos() {
   const areas = [
@@ -30,44 +31,77 @@ function FormPArticulos() {
   ];
 
   const decisions = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" },
+    { value: true, label: "Si" },
+    { value: false, label: "No" },
   ];
+
+  const validationSchema = Yup.object().shape({
+    ISSN_impreso: Yup.string().required('Campo obligatorio'),
+    ISSN_electronico: Yup.string().required('Campo obligatorio'),
+    DOI: Yup.string().required('Campo obligatorio'),
+    nombre_revista: Yup.string().required('Campo obligatorio'),
+    titulo_articulo: Yup.string().required('Campo obligatorio'),
+    num_revista: Yup.string().required('Campo obligatorio'),
+    vol_revista: Yup.string().required('Campo obligatorio'),
+    year_publicacion: Yup.string()
+      .matches(/^\d{4}$/, 'El año debe contener exactamente 4 números.')
+      .required('Campo obligatorio'),
+    de_pagina: Yup.string().required('Campo obligatorio'),
+    a_pagina: Yup.string().required('Campo obligatorio'),
+    palabra_clave1: Yup.string().required('Campo obligatorio'),
+    palabra_clave2: Yup.string().required('Campo obligatorio'),
+    palabra_clave3: Yup.string().required('Campo obligatorio'),
+    area: Yup.string().required('Campo obligatorio'),
+    campo: Yup.string().required('Campo obligatorio'),
+    disciplina: Yup.string().required('Campo obligatorio'),
+    subdisciplina: Yup.string().required('Campo obligatorio'),
+    apoyo_CONACYT: Yup.string().required('Campo obligatorio'),
+  });
 
   return (
     <>
       <Formik
+        validationSchema={validationSchema}
         initialValues={{
-          issnimpreso: "",
-          issnelectronico: "",
-          doi: "",
-          nombredelarevista: "",
-          tituloArticulo: "",
-          numeroRevista: "",
-          volumenRevista: "",
-          yearPublicacion: "",
-          paginaDe: "",
-          paginaA: "",
-          palabraClave1: "",
-          palabraClave2: "",
-          palabraClave3: "",
+          ISSN_impreso: "",
+          ISSN_electronico: "",
+          DOI: "",
+          nombre_revista: "",
+          titulo_articulo: "",
+          num_revista: "",
+          vol_revista: "",
+          year_publicacion: "",
+          de_pagina: "",
+          a_pagina: "",
+          palabra_clave1: "",
+          palabra_clave2: "",
+          palabra_clave3: "",
           area: "",
           campo: "",
           disciplina: "",
           subdisciplina: "",
-          apoyoConacyt: "",
+          apoyo_CONACYT: "",
           fondo: "",
         }}
         onSubmit={async (values, actions) => {
           try {
-            Swal.fire({
-              icon: "success",
-              title: "Guardado con exíto",
-              showConfirmButton: true,
-              timer: 1500,
-            });
-            console.table(values);
+            const response = await createPublicacionArticulos(values);
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Guardado con exíto",
+                showConfirmButton: true,
+                timer: 1500,
+              });
+              console.table(values);
+            }
           } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error...",
+              text: "Intente de nuevo",
+              footer: 'Si el problema persiste intentelo mas tarde'
+            });
             console.log(error);
           }
         }}
@@ -89,68 +123,99 @@ function FormPArticulos() {
             <div className="flex flex-col gap-6">
               <Title level="h1" text="Publicación de artículos" />
               <div className="grid grid-cols-3 gap-5">
-                <WrapperInput onchange={handleChange} name="issnimpreso" mensaje="ISSN impreso:" type="text" />
-                <WrapperInput onchange={handleChange} name="issnelectronico" mensaje="ISSN electrónico:" type="text" />
-                <WrapperInput onchange={handleChange} name="doi" mensaje="DOI:" type="text" />
+                <div>
+                  <WrapperInput onchange={handleChange} name="ISSN_impreso" mensaje="ISSN impreso:" type="text" />
+                  <ErrorMessage name="ISSN_impreso" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="ISSN_electronico" mensaje="ISSN electrónico:" type="text" />
+                  <ErrorMessage name="ISSN_electronico" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="DOI" mensaje="DOI:" type="text" />
+                  <ErrorMessage name="DOI" className='text-red-500' component="div" />
+                </div>
               </div>
-              <WrapperInput onchange={handleChange} name="nombredelarevista" mensaje="Nombre de la revista:" type="text" />
-              <WrapperInput onchange={handleChange} name="tituloArticulo" mensaje="Título del artículo:" type="text" />
-              <div className="grid grid-cols-3 gap-5">
-                <WrapperInput onchange={handleChange} name="numeroRevista" mensaje="Número de la revista:" type="text" />
-                <WrapperInput onchange={handleChange} name="volumenRevista" mensaje="Volumen de la revista:" type="text" />
-                <WrapperInput onchange={handleChange} name="yearPublicacion" mensaje="Año de la publicación:" type="text" />
-                <WrapperInput onchange={handleChange} name="paginaDe" mensaje="Páginas de:" type="text" />
-                <WrapperInput onchange={handleChange} name="paginaA" mensaje="a:" type="text" />
+              <div>
+                <WrapperInput onchange={handleChange} name="nombre_revista" mensaje="Nombre de la revista:" type="text" />
+                <ErrorMessage name="nombre_revista" className='text-red-500' component="div" />
+              </div>
+              <div>
+                <WrapperInput onchange={handleChange} name="titulo_articulo" mensaje="Título del artículo:" type="text" />
+                <ErrorMessage name="titulo_articulo" className='text-red-500' component="div" />
               </div>
               <div className="grid grid-cols-3 gap-5">
-                <WrapperInput onchange={handleChange} name="palabraClave1" mensaje="Palabra clave 1:" type="text" />
-                <WrapperInput onchange={handleChange} name="palabraClave2" mensaje="Palabra clave 2:" type="text" />
-                <WrapperInput onchange={handleChange} name="palabraClave3" mensaje="Palabra clave 3:" type="text" />
+                <div>
+                  <WrapperInput onchange={handleChange} name="num_revista" mensaje="Número de la revista:" type="number" />
+                  <ErrorMessage name="num_revista" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="vol_revista" mensaje="Volumen de la revista:" type="number" />
+                  <ErrorMessage name="vol_revista" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="year_publicacion" mensaje="Año de la publicación:" type="text" />
+                  <ErrorMessage name="year_publicacion" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="de_pagina" mensaje="Páginas de:" type="numbres" />
+                  <ErrorMessage name="de_pagina" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="a_pagina" mensaje="a:" type="number" />
+                  <ErrorMessage name="a_pagina" className='text-red-500' component="div" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-5">
+                <div>
+                  <WrapperInput onchange={handleChange} name="palabra_clave1" mensaje="Palabra clave 1:" type="text" />
+                  <ErrorMessage name="palabra_clave1" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="palabra_clave2" mensaje="Palabra clave 2:" type="text" />
+                  <ErrorMessage name="palabra_clave2" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput onchange={handleChange} name="palabra_clave3" mensaje="Palabra clave 3:" type="text" />
+                  <ErrorMessage name="palabra_clave3" className='text-red-500' component="div" />
+                </div>
               </div>
               <div className="flex flex-col gap-5">
                 <Title level="h4" text="Área de conocimiento" />
                 <div className="grid grid-cols-3 gap-5">
                   <div className="mt-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                      Área
-                    </label>
-                    <Select
-                      name="area"
-                      placeholder={"Seleccione una opción"}
-                      onChange={(selectedOption, _) =>
-                        setFieldValue(`area`, selectedOption.value)
-                      }
-                      options={areas}
-                    />
+                    <label className="block text-sm font-medium leading-6 text-gray-900">Área</label>
+                    <Select name="area" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
+                    <ErrorMessage name="area" className='text-red-500' component="div" />
                   </div>
-                  <WrapperInput onchange={handleChange} name="campo" mensaje="Campo" type="text" />
-                  <WrapperInput onchange={handleChange} name="disciplina" mensaje="Disciplina" type="text" />
-                  <WrapperInput onchange={handleChange} name="subdisciplina" mensaje="Subdisciplina" type="text" />
+                  <div>
+                    <WrapperInput onchange={handleChange} name="campo" mensaje="Campo" type="text" />
+                    <ErrorMessage name="campo" className='text-red-500' component="div" />
+                  </div>
+                  <div>
+                    <WrapperInput onchange={handleChange} name="disciplina" mensaje="Disciplina" type="text" />
+                    <ErrorMessage name="disciplina" className='text-red-500' component="div" />
+                  </div>
+                  <div>
+                    <WrapperInput onchange={handleChange} name="subdisciplina" mensaje="Subdisciplina" type="text" />
+                    <ErrorMessage name="subdisciplina" className='text-red-500' component="div" />
+                  </div>
                 </div>
                 <div className="grid grid-cols-3 gap-5">
-                <div>
-                  <label className="block text-sm font-medium mb-3 text-gray-900">
-                    ¿Recibicio apoyo del CONACYT?:
-                  </label>
-                  <Select
-                    name="apoyoConacyt"
-                    placeholder={"Seleccione una opción"}
-                    style="display: none;"
-                    onChange={(selectedOption, _) =>
-                      setFieldValue(`apoyoConacyt`, selectedOption.value)
-                    }
-                    options={decisions}
-                  />
+                  <div>
+                    <label className="block text-sm font-medium mb-3 text-gray-900"> ¿Recibicio apoyo del CONACYT?: </label>
+                    <Select name="apoyo_CONACYT" placeholder={"Seleccione una opción"} style="display: none;" onChange={(selectedOption, _) => setFieldValue(`apoyo_CONACYT`, selectedOption.value)} options={decisions} />
+                    <ErrorMessage name="apoyo_CONACYT" className='text-red-500' component="div" />
+                  </div>
+                  {values.apoyo_CONACYT === true && (
+                    <>
+                      <div>
+                        <WrapperInput mensaje={"Fondo/programa: "} type={"text"} name={"fondo"} onchange={handleChange} />
+                        <ErrorMessage name="fondo" className='text-red-500' component="div" />
+                      </div>
+                    </>
+                  )}
                 </div>
-                {values.apoyoConacyt === "si" && (
-                  <WrapperInput
-                    mensaje={"Fondo/programa: "}
-                    type={"text"}
-                    name={"fondo"}
-                    onchange={handleChange}
-                  />
-                )}
-              </div>
               </div>
 
               <div>
@@ -160,7 +225,7 @@ function FormPArticulos() {
                 >
                   {isSubmitting ? "Guardando..." : "Guardar"}
                 </button>
-              </div> 
+              </div>
             </div>
           </Form>
         )}

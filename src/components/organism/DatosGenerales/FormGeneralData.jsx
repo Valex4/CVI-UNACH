@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import  html2pdf  from "html2pdf.js";
 import Swal from "sweetalert2";
 import Select from 'react-select'
@@ -7,21 +7,20 @@ import WrapperInput from "../../molecules/wrapperInput";
 import WrapperTable from "../../molecules/WrapperTable";
 import Title from "../../atoms/Title";
 import Button from "../../atoms/Button";
-import { getUser } from "../../../api/Routes";
-import Cookies from 'js-cookie';
-
-
+import { getUser, updateUser } from "../../../api/DatosGenerales/Routes";
+import * as Yup from 'yup';
 
 function FormGeneralData () {
   const [Datos, setDatos] = useState([])
+  const [Fecha, setFecha] = useState()
   useEffect(() => {
     const getData = async() =>{
-      const token = Cookies.get('token');
-      console.log(token);
       try{
-        const response = await getUser(token);
-        console.log("Estamos obteniendo la data el usuario")
-        console.table(response.data)
+        const response = await getUser();
+        console.log(response.data);
+        const fechaObj = new Date(response.data.fecha_de_nacimiento);
+        const fechaFormateada = fechaObj.toISOString().split('T')[0];
+        setFecha(fechaFormateada)
         setDatos(response.data)
       }catch(err){
         console.log(err)
@@ -30,7 +29,15 @@ function FormGeneralData () {
     getData();
   }, [])
   
-  
+  const validationSchema = Yup.object({
+    rfc: Yup.string()
+      .notRequired()
+      .test('rfc-length', 'El RFC debe contener exactamente 13 caracteres', function (value) {
+        // Validar la longitud solo si se ha ingresado un RFC
+        return !value || (value && value.length === 13);
+      }),
+  });
+
   const Sexo = [
     { value: 'FEMENINO', label: 'FEMENINO' },
     { value: 'MASCULINO', label: 'MASCULINO' },
@@ -46,10 +53,6 @@ function FormGeneralData () {
     { value: 'VIUDO', label: 'VIUDO' },
     { value: 'CONTRATOS DE CONVIVENCIA', label: 'CONTRATOS DE CONVIVENCIA' }
   ]
-
-  const handlerClickAgregar = () =>{
-    Swal.fire("SweetAlert2 is working!");
-  }
 
   const handlerClickImprimir = async () =>{
 
@@ -71,47 +74,38 @@ function FormGeneralData () {
 
   }
 
-  const indexEstadoConyugal = Estado.findIndex((option) => option.value === Datos.estado_conyugal);
-
-  console.log('Índice de estado conyugal:', indexEstadoConyugal);
-
     return ( 
     <>
              <Formik
+             validationSchema={validationSchema}
+             enableReinitialize
             initialValues={{
-                curp: "",
-                nombre: "",
-                primer_apellido: "",
-                segundo_apellido: "",
-                fecha_de_nacimiento: "",
-                sexo: "",
-                pais: "",
-                entidad: "",
-                rfc: "",
-                estado_conyugal:"",
-                nacionalidad: "",
-                cvi: "",
-                tipo: "",
-                orc: "",
-                idthomsom: "",
-                idauthor: "",
-                pubidauthor: "",
-                openid: ""
-
+                rfc: Datos.rfc,
+                estado_conyugal: Datos.estado_conyugal,
+                tipo_beneficios: Datos.tipo_beneficios,
             }}
-
             onSubmit={async(values, actions) =>{
-                try{
-                    Swal.fire({
-                        icon: "success",
-                        title: "Guardado con exíto",
-                        showConfirmButton: true,
-                        timer: 1500,
-                      });
-                      console.table(values);
-                }catch(error){
-                    console.log(error);
+              try {
+                console.table(values)
+                const response = await updateUser(values, Datos.id);
+                if(response.status === 200) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Guardado con exíto",
+                    showConfirmButton: true,
+                    timer: 1500,
+                  });
+                  console.table(values);
                 }
+              } catch (error) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Error...",
+                  text: "Intente de nuevo",
+                  footer: 'Si el problema persiste intentelo mas tarde'
+                });
+                console.log(error);
+              }
             }} 
         
         >
@@ -122,25 +116,28 @@ function FormGeneralData () {
                     <Title level={"h1"} text={"Datos generales"} />
                     </div>
                     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        <WrapperInput onchange={handleChange} name={"curp"} type="text" mensaje="CURP" dato={Datos.curp} activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"nombre"} type="text" mensaje="Nombre" dato={Datos.nombre} activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"papellido"} type="text" mensaje="Primer apellido" dato={Datos.primer_apellido} activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"sapellido"} type="text" mensaje="Segundo apellido" dato={Datos.segundo_apellido}  activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"fecha"} type="date" mensaje="Fecha de nacimiento" dato={Datos.fecha_de_nacimiento}  activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="CURP" dato={Datos.curp} activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="Nombre" dato={Datos.nombre} activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="Primer apellido" dato={Datos.primer_apellido} activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="Segundo apellido" dato={Datos.segundo_apellido}  activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="date" mensaje="Fecha de nacimiento" dato={Fecha}  activo="true"/>
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">Sexo</label>
                         <Select name='sexo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`sexo`, selectedOption.value)} options={Sexo} value={Sexo.filter(option => option.label === `${Datos.sexo}`)} isDisabled="true"/>
                         </div>
-                        <WrapperInput onchange={handleChange} name={"pais"} type="text" mensaje="País de nacimiento" dato={Datos.pais}   activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"entidad"} type="text" mensaje="Entidad federativa" dato={Datos.entidad}  activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"rfc"} type="text" mensaje="RFC" dato={Datos.rfc}   />
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="País de nacimiento" dato={Datos.pais}   activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="Entidad federativa" dato={Datos.entidad}  activo="true"/>
                         <div>
-                        <label className="block text-sm font-medium leading-6 text-gray-900">Estado conyugal</label>
-                        <Select name='estado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estado`, selectedOption.value || '')} defaultValue={Estado[indexEstadoConyugal]} options={Estado}/>
+                          <WrapperInput onchange={handleChange} name={"rfc"} type="text" mensaje="RFC" dato={values.rfc}/>
+                          <ErrorMessage name="rfc" className='text-red-500' component="div" />
                         </div>
-                        <WrapperInput onchange={handleChange} name={"nacionalidad"} type="text" mensaje="Nacionalidad" dato={Datos.nacionalidad}  activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"numero"} type="text" mensaje="N° de CVU" dato={Datos.cvi}   activo="true"/>
-                        <WrapperInput onchange={handleChange} name={"tipo"} type="text" mensaje="Tipo de beneficio"  />
+                        <div>
+                        <label className="block text-sm font-medium leading-6 text-gray-900">Estado conyugal: {Datos.estado_conyugal}</label>
+                        <Select name='estado_conyugal' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estado_conyugal`, selectedOption.value)}  options={Estado}/>
+                        </div>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="Nacionalidad" dato={Datos.nacionalidad}  activo="true"/>
+                        <WrapperInput onchange={handleChange}  type="text" mensaje="N° de CVU" dato={Datos.cvi}   activo="true"/>
+                        <WrapperInput onchange={handleChange}  name={"tipo_beneficios"} type="text" dato={values.tipo_beneficios} mensaje={`Tipo de beneficio:`}  />
                     </div>
                     
 
@@ -149,81 +146,17 @@ function FormGeneralData () {
                     <h4 className="px-2 text-white font-bold text-sm">Identificador de autor</h4>
                     <p className="pr-2 text-white font-bold text-sm">ID</p>
                 </div>
-                <WrapperTable onchange={handleChange} name={"orc"} className="bg-[#18386B]" mensaje="ORC ID" />
-                <WrapperTable onchange={handleChange} name={"idthomsom"} className="bg-[#758AAC]" mensaje="Researcher ID Thomson" />
-                <WrapperTable onchange={handleChange} name={"idauthor"} className="bg-[#18386B]" mensaje="arXiv Author ID" />
-                <WrapperTable onchange={handleChange} name={"pubidauthor"} className="bg-[#758AAC]" mensaje="PubMed Author ID" />
-                <WrapperTable onchange={handleChange} name={"openid"} className="bg-[#18386B]" mensaje="Open ID" />
+                <WrapperTable onchange={handleChange} className="bg-[#18386B]" mensaje="ORC ID" />
+                <WrapperTable onchange={handleChange} className="bg-[#758AAC]" mensaje="Researcher ID Thomson" />
+                <WrapperTable onchange={handleChange} className="bg-[#18386B]" mensaje="arXiv Author ID" />
+                <WrapperTable onchange={handleChange} className="bg-[#758AAC]" mensaje="PubMed Author ID" />
+                <WrapperTable onchange={handleChange} className="bg-[#18386B]" mensaje="Open ID" />
           </div>
                 <div className="flex justify-end w-full gap-4">
                 <Button type={"button"} mensaje="Imprimir" onclick={handlerClickImprimir} className=" bg-white text-[#828282] mt-3" />
-                <Button type={"submit"} mensaje="Guardar" className=" bg-[#18386B] text-white mt-3" />
+                <button type="submit" className="rounded-md bg-[#30599b] text-white mt-3 border-2 border-[#18386B] px-3 py-1.5 text-sm font-semibold leading-6  shadow-sm hover:text-white hover:bg-[#30599b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isSubmitting ? "Guardando..." : "Guardar"}</button>
                 </div>
             </div>
-            <div>
-                <div className="mx-auto mt-8 mb-8">
-                  <table className="min-w-full bg-white border-gray-300 drop-shadow-2xl  rounded-3xl ">
-                    <thead className=" w-full h-10 p-30">
-                    <tr className=" rounded-lg">
-                        <th className="p-3"><Title level="h3" text="Medios de contacto" /> </th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th className="p-3"><Button type={"button"} onClick={handlerClickAgregar} mensaje="Agregar" className="w-full bg-[#18386B] text-white" /> {/* cambiar boton */}</th>
-                    </tr>
-                    </thead>
-                    <thead>
-                      <tr className=" bg-[#667DA3] text-white">
-                        <th className="py-2 px-4 border-b text-left">Medio</th>
-                        <th className="py-2 px-4 border-b text-left">Categoría</th>
-                        <th className="py-2 px-4 border-b text-left">Correo/Telefono</th>
-                        <th className="py-2 px-4 border-b text-left">Principal</th>
-                        <th className="py-2 px-4 border-b text-left">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="py-2 px-4 border-b">1</td>
-                        <td className="py-2 px-4 border-b">John Doe</td>
-                        <td className="py-2 px-4 border-b">john@example.com</td>
-                        <td className="py-2 px-4 border-b">john@example.com</td>
-                        <td className="py-2 px-4 border-b">
-                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
-                          <span className="material-icons-sharp">
-                            edit
-                            </span>
-                          </button>
-                          <button className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2  hover:bg-red-600 ">
-                          <span className="material-symbols-outlined">
-                           delete
-                           </span>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tbody>
-                      <tr>
-                        <td className="py-2 px-4 border-b">1</td>
-                        <td className="py-2 px-4 border-b">John Doe</td>
-                        <td className="py-2 px-4 border-b">john@example.com</td>
-                        <td className="py-2 px-4 border-b">john@example.com</td>
-                        <td className="py-2 px-4 border-b">
-                        <button type="button" className="bg-[#758AAC] text-black w-9 h-10 rounded-full">
-                          <span className="material-icons-sharp">
-                            edit
-                            </span>
-                          </button>
-                          <button type="button" className="bg-[#758AAC] text-black w-9 h-10 rounded-full ml-2  hover:bg-red-600 ">
-                          <span className="material-symbols-outlined">
-                           delete
-                           </span>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
 
             </Form>
             )}

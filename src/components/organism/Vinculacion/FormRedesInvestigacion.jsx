@@ -1,9 +1,11 @@
 import React from 'react'
-import { Formik, Form } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import WrapperInput from '../../molecules/wrapperInput';
 import Title from '../../atoms/Title';
 import Swal from "sweetalert2";
 import Select from "react-select";
+import { createRedesInvestigacion } from '../../../api/Vinculacion/Routes';
+import * as Yup from 'yup';
 
 function FormRedesInvestigacion() {
 
@@ -29,18 +31,50 @@ function FormRedesInvestigacion() {
     },
   ];
 
+  const validationSchema = Yup.object().shape({
+    nombre_red: Yup.string().required('Campo obligatorio'),
+    nombre_responsable: Yup.string().required('Campo obligatorio'),
+    fecha_creacion: Yup.string().required('Campo obligatorio'),
+    fecha_ingreso: Yup.string()
+      .required('Campo obligatorio')
+      .test(
+        'fecha-valida',
+        'La fecha de ingreso debe ser mayor o igual a la fecha de inicio',
+        function (value) {
+          const vigenciaDe = this.resolve(Yup.ref('fecha_creacion'));
+          const vigenciaA = this.resolve(Yup.ref('fecha_ingreso'));
+  
+          if (!vigenciaDe || !vigenciaA) {
+            return true; // Si alguna fecha está ausente, se asume que la validación pasa
+          }
+  
+          // Comparar las fechas
+          return new Date(vigenciaA) >= new Date(vigenciaDe);
+        }
+      ),
+    primer_apellido_responsable: Yup.string().required('Campo obligatorio'),
+    segundo_apellido_responsable: Yup.string().required('Campo obligatorio'),
+    institucion_adscripcion: Yup.string().required('Campo obligatorio'),
+    total_integrantes: Yup.string().required('Campo obligatorio'),
+    area: Yup.string().required('Campo obligatorio'),
+    campo: Yup.string().required('Campo obligatorio'),
+    disciplina: Yup.string().required('Campo obligatorio'),
+    subdisciplina: Yup.string().required('Campo obligatorio'),
+  });
+
   return (
     <>
       <Formik
+        validationSchema={validationSchema}
         initialValues={{
-          nombreRed: "",
-          fechaCreacion: "",
-          fechaIngreso: "",
-          nombre: "",
-          primerApellido: "",
-          segundoApellido: "",
-          institucionRed: "",
-          totalIntegrante: "",
+          nombre_red: "",
+          fecha_creacion: "",
+          fecha_ingreso: "",
+          nombre_responsable: "",
+          primer_apellido_responsable: "",
+          segundo_apellido_responsable: "",
+          institucion_adscripcion: "",
+          total_integrantes: "",
           area: "",
           campo: "",
           disciplina: "",
@@ -48,13 +82,22 @@ function FormRedesInvestigacion() {
         }}
         onSubmit={async (values, actions) => {
           try {
-            Swal.fire({
-              icon: "success",
-              title: "Guardado con exíto",
-              showConfirmButton: true,
-              timer: 1500,
-            });
-            console.table(values);
+            const response = await createRedesInvestigacion(values);
+            if(response.status === 200){
+              Swal.fire({
+                icon: "success",
+                title: "Guardado con éxito",
+                showConfirmButton: true,
+                timer: 1500,
+              });
+            }else{
+              Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: "Intente de nuevo",
+                footer: 'Si el problema persiste intentelo mas tarde'
+              });
+            }
           } catch (error) {
             console.log(error);
           }
@@ -77,41 +120,66 @@ function FormRedesInvestigacion() {
             <div className='flex flex-col gap-5'>
               <Title level="h1" text="Redes de investigación" />
               <div className='grid grid-cols-3 gap-5'>
-                <WrapperInput onchange={handleChange} name="nombreRed" mensaje="Nombre red:" type="text" />
-                <WrapperInput onchange={handleChange} name="fechaCreacion" mensaje="Fecha de creación:" type="date" />
-                <WrapperInput onchange={handleChange} name="fechaIngreso" mensaje="Fecha de ingreso:" type="date" />
+                <div>
+                <WrapperInput onchange={handleChange} name="nombre_red" mensaje="Nombre red:" type="text" />
+                <ErrorMessage name="nombre_red" className='text-red-500' component="div" />
+                </div>
+                <div>
+                <WrapperInput onchange={handleChange} name="fecha_creacion" mensaje="Fecha de creación:" type="date" />
+                <ErrorMessage name="fecha_creacion" className='text-red-500' component="div" />
+                </div>
+                <div>
+                <WrapperInput onchange={handleChange} name="fecha_ingreso" mensaje="Fecha de ingreso:" type="date" />
+                <ErrorMessage name="fecha_ingreso" className='text-red-500' component="div" />
+                </div>
               </div>
               <div className='flex flex-col gap-5'>
                 <Title level="h4" text="Nombre del responsable de la red" />
                 <div className='grid grid-cols-3 gap-5'>
-                  <WrapperInput onchange={handleChange} name="nombre" mensaje="Nombre:" type="text" />
-                  <WrapperInput onchange={handleChange} name="primerApellido" mensaje="Primer apellido:" type="text" />
-                  <WrapperInput onchange={handleChange} name="segundoApellido" mensaje="Segundo apellido:" type="text" />
+                  <div>
+                  <WrapperInput onchange={handleChange} name="nombre_responsable" mensaje="Nombre:" type="text" />
+                  <ErrorMessage name="nombre_responsable" className='text-red-500' component="div" />
+                  </div>
+                  <div>
+                  <WrapperInput onchange={handleChange} name="primer_apellido_responsable" mensaje="Primer apellido:" type="text" />
+                  <ErrorMessage name="primer_apellido_responsable" className='text-red-500' component="div" />
+                  </div>
+                  <div>
+                  <WrapperInput onchange={handleChange} name="segundo_apellido_responsable" mensaje="Segundo apellido:" type="text" />
+                  <ErrorMessage name="segundo_apellido_responsable" className='text-red-500' component="div" />
+                  </div>
                 </div>
               </div>
               <div className='grid grid-cols-2 gap-5'>
-                <WrapperInput onchange={handleChange} name="institucionRed" mensaje="Institución de adscripción del responsable de la red:" type="text" />
-                <WrapperInput onchange={handleChange} name="totalIntegrante" mensaje="Total de integrantes:" type="number" />
+                <div>
+                <WrapperInput onchange={handleChange} name="institucion_adscripcion" mensaje="Institución de adscripción del responsable de la red:" type="text" />
+                <ErrorMessage name="institucion_adscripcion" className='text-red-500' component="div" />
+                </div>
+                <div>
+                <WrapperInput onchange={handleChange} name="total_integrantes" mensaje="Total de integrantes:" type="number" />
+                <ErrorMessage name="total_integrantes" className='text-red-500' component="div" />
+                </div>
               </div>
               <div className='flex flex-col gap-5'>
                 <Title level="h4" text="Área de conocimiento" />
                 <div className="grid grid-cols-3 gap-5">
                     <div className="mt-2">
-                      <label className="block text-sm font-medium leading-6 text-gray-900">
-                        Área
-                      </label>
-                      <Select
-                        name="area"
-                        placeholder={"Seleccione una opción"}
-                        onChange={(selectedOption, _) =>
-                          setFieldValue(`area`, selectedOption.value)
-                        }
-                        options={areas}
-                      />
+                      <label className="block text-sm font-medium leading-6 text-gray-900"> Área</label>
+                      <Select name="area" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value) } options={areas}/>
+                      <ErrorMessage name="area" className='text-red-500' component="div" />
                     </div>
+                    <div>
                     <WrapperInput onchange={handleChange} name="campo" mensaje="Campo" type="text" />
+                    <ErrorMessage name="campo" className='text-red-500' component="div" />
+                    </div>
+                    <div>
                     <WrapperInput onchange={handleChange} name="disciplina" mensaje="Disciplina" type="text" />
+                    <ErrorMessage name="disciplina" className='text-red-500' component="div" />
+                    </div>
+                    <div>
                     <WrapperInput onchange={handleChange} name="subdisciplina" mensaje="Subdisciplina" type="text" />
+                    <ErrorMessage name="subdisciplina" className='text-red-500' component="div" />
+                    </div>
                   </div>
               </div>
 
