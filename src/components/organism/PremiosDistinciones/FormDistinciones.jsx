@@ -1,46 +1,53 @@
 import React from 'react'
 import Title from "../../atoms/Title";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import WrapperInput from "../../molecules/wrapperInput";
 import Swal from "sweetalert2";
+import { createDistincionNoConacyt } from '../../../api/PremiosDistinciones/Routes';
+import * as Yup from 'yup';
 
 function FormDistinciones() {
 
+  const validationSchema = Yup.object().shape({
+    nombre_distincion: Yup.string().required('Campo obligatorio'),
+    institucion: Yup.string().required('Campo obligatorio'),
+    pais: Yup.string().required('Campo obligatorio'),
+    descripcion_distincion: Yup.string().required('Campo obligatorio'),
+    year: Yup.string()
+      .matches(/^\d{4}$/, 'El año debe contener exactamente 4 números.')
+      .required('Campo obligatorio'),
+  });
   return (
     <>
-    <Formik
+      <Formik
+        validationSchema={validationSchema}
         initialValues={{
-          nombreDistincion:"",
-          institucion:"",
-          pais:"",
-          fecha:"",
-          descripcion:""
+          nombre_distincion: "",
+          institucion: "",
+          pais: "",
+          year: "",
+          descripcion_distincion: ""
         }}
         onSubmit={async (values, actions) => {
           try {
-            //Descomentar lo siguiente cuando este lo del axios y funcione el back
-
-            /* const response = await loginUser(values);
-
-                    if(response.status === 200){
-
-
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error...",
-                            text: "Intente de nuevo",
-                            footer: 'Si el problema persiste intentelo mas tarde'
-                          });
-                          console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.table(values);
+            const response = await createDistincionNoConacyt(values);
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Guardado exitosamente...",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              console.table(values);
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: "Intente de nuevo",
+                footer: 'Si el problema persiste intentelo mas tarde'
+              });
+              console.log(error);
+            }
           } catch (error) {
             console.log(error);
           }
@@ -60,40 +67,32 @@ function FormDistinciones() {
           >
             <div id="padre" className="flex flex-col gap-8">
               <Title level={"h1"} text={"Distinciones no CONACYT"} />
-
               <div className='grid grid-cols-1 gap-5'>
-              <WrapperInput
-                mensaje={"Nombre de la distinción"}
-                type={"text"}
-                name={"nombreDistincion"}
-                onchange={handleChange}
-                />
-              <WrapperInput
-                mensaje={"Institución que otorgó el premio o la distinción"}
-                type={"text"}
-                name={"institucion"}
-                onchange={handleChange}
-                />
-              <div id="fechas" className="grid grid-cols-2 gap-5">
-              <WrapperInput
-                mensaje={"País"}
-                type={"text"}
-                name={"pais"}
-                onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Fecha"}
-                  type={"date"}
-                  name={"fecha"}
-                  onchange={handleChange}
-                  />
+                <div>
+                <WrapperInput mensaje={"Nombre de la distinción: "} type={"text"} name={"nombre_distincion"} onchange={handleChange}/>
+                <ErrorMessage name="nombre_distincion" className='text-red-500' component="div" />
+                </div>
+                <div>
+                <WrapperInput mensaje={"Institución que otorgó el premio o la distinción: "} type={"text"} name={"institucion"} onchange={handleChange}/>
+                <ErrorMessage name="institucion" className='text-red-500' component="div" />
+                </div>
+                <div id="fechas" className="grid grid-cols-2 gap-5">
+                  <div>
+                  <WrapperInput mensaje={"País: "} type={"text"} name={"pais"} onchange={handleChange}/>
+                  <ErrorMessage name="pais" className='text-red-500' component="div" />
+                  </div>
+                  <div>
+                    <WrapperInput mensaje={"Año: "} type={"text"} name={"year"} onchange={handleChange}/>
+                    <ErrorMessage name="year" className='text-red-500' component="div" />
+                  </div>
                 </div>
                 <section className='mt-1 flex flex-col gap-2'>
                   <label className="block text-sm font-medium  text-gray-900 first-letter:">Descripción premio distinción:</label>
-                  <textarea name="descripcion" placeholder='Descripción' cols="10" rows="3" onChange={handleChange} className='textareaStyle'></textarea>
+                  <textarea name="descripcion_distincion" placeholder='Descripción' cols="10" rows="3" onChange={handleChange} className='textareaStyle'></textarea>
+                  <ErrorMessage name="descripcion_distincion" className='text-red-500' component="section" />
                 </section>
               </div>
-    
+
               <div className="mt-3">
                 <button
                   type="submit"

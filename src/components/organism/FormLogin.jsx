@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import Swal from "sweetalert2";
 import logo from "../../assets/images/logo.png"
 import { Link, Navigate } from "react-router-dom";
-import { loginUser } from "../../api/Routes";
+import { loginUser } from "../../api/DatosGenerales/Routes";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 function FormLogin() {
@@ -52,8 +52,12 @@ function FormLogin() {
                           });
                     } 
                 }catch(error){
-                    alert("Error: " + error)
-                    console.log(error);
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Error...",
+                        text: "Intente de nuevo",
+                        footer: 'Usuario y contraseña incorrectos'
+                      });
                 }
             }} 
         

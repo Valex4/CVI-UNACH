@@ -1,64 +1,70 @@
 import React from 'react'
 import Title from "../../../atoms/Title";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import WrapperInput from "../../../molecules/wrapperInput";
 import Swal from "sweetalert2";
 import Select from 'react-select';
+import { createParticipacionCongresos } from '../../../../api/ComunicacionPublica/Routes';
+import * as Yup from 'yup';
 
 function FormDifusion() {
   const participacion = [
-    { value: "conferencia", label: "Conferencia Magistral"},
-    { value: "moderador", label: "Moderador"},
-    { value: "organizador", label: "Organizador del evento"},
-    { value: "participante", label: "Participante en mesa redonda"},
-    { value: "ponencia", label: "Ponencia"},
-    { value: "poster", label: "Póster"},
-    { value: "presentacion", label: "Presentación de artículo en extenso"},
-    { value: "folder", label: "Folder"},
+    { value: "conferencia", label: "Conferencia Magistral" },
+    { value: "moderador", label: "Moderador" },
+    { value: "organizador", label: "Organizador del evento" },
+    { value: "participante", label: "Participante en mesa redonda" },
+    { value: "ponencia", label: "Ponencia" },
+    { value: "poster", label: "Póster" },
+    { value: "presentacion", label: "Presentación de artículo en extenso" },
+    { value: "folder", label: "Folder" },
   ]
+
+  const validationSchema = Yup.object({
+    nombre_congreso: Yup.string().required('Campo obligatorio'),
+    titulo_trabajo: Yup.string().required('Campo obligatorio'),
+    participacion_congreso: Yup.string().required('Campo obligatorio'),
+    pais: Yup.string().required('Campo obligatorio'),
+    fecha: Yup.date().required('Campo obligatorio'),
+    palabra_clave1: Yup.string().required('Campo obligatorio'),
+    palabra_clave2: Yup.string().required('Campo obligatorio'),
+    palabra_clave3: Yup.string().required('Campo obligatorio'),
+  });
 
   return (
     <>
-    <Formik
+      <Formik
         initialValues={{
-          nombreCongreso:"",
-          titulo:"",
-          tipo:"",
-          pais:"",
-          fecha:"",
-          palabraUno:"",
-          palabraDos:"",
-          palabraTres:""
+          nombre_congreso: "",
+          titulo_trabajo: "",
+          participacion_congreso: "",
+          pais: "",
+          fecha: "",
+          palabra_clave1: "",
+          palabra_clave2: "",
+          palabra_clave3: ""
         }}
         onSubmit={async (values, actions) => {
           try {
-            //Descomentar lo siguiente cuando este lo del axios y funcione el back
-
-            /* const response = await loginUser(values);
-
-                    if(response.status === 200){
-
-
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error...",
-                            text: "Intente de nuevo",
-                            footer: 'Si el problema persiste intentelo mas tarde'
-                          });
-                          console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.table(values);
+            const response = await createParticipacionCongresos(values);
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Guardado con exíto",
+                showConfirmButton: true,
+                timer: 1500,
+              });
+            }
           } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error...",
+              text: "Intente de nuevo",
+              footer: 'Si el problema persiste intentelo mas tarde'
+            });
             console.log(error);
           }
         }}
+        validationSchema={validationSchema}
       >
         {({
           values,
@@ -67,72 +73,48 @@ function FormDifusion() {
           handleSubmit,
           handleChange,
           isSubmitting,
-          setFieldValue
+          setFieldValue,
         }) => (
-          <Form
-            onSubmit={handleSubmit}
-            className="space-y-2 mt-[10px] py-8 pl-8 pr-8"
-          >
+          <Form onSubmit={handleSubmit} className="space-y-2 mt-[10px] py-8 pl-8 pr-8">
             <div id="padre" className="flex flex-col gap-8">
               <Title level={"h1"} text={"Participación en congresos"} />
-
               <div className='grid grid-cols-2 gap-5'>
-              <WrapperInput
-                mensaje={"Nombre del congreso"}
-                type={"text"}
-                name={"nombreCongreso"}
-                onchange={handleChange}
-                />
-              <WrapperInput
-                mensaje={"Título del trabajo"}
-                type={"text"}
-                name={"titulo"}
-                onchange={handleChange}
-                />
-
-               <div className='flex flex-col gap-2'>
-              <label className="block text-sm font-medium  text-gray-900">Tipo de participación en congreso</label>
-              <Select className='w-[98%]' name='tipo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`tipo`, selectedOption.value)} options={participacion} />
+                <div>
+                  <WrapperInput mensaje={"Nombre del congreso"} type={"text"} name={"nombre_congreso"} onchange={handleChange} />
+                  <ErrorMessage name="nombre_congreso" className='text-red-500' component="div" />
                 </div>
-
-              <WrapperInput
-                mensaje={"País"}
-                type={"text"}
-                name={"pais"}
-                onchange={handleChange}
-                />
+                <div>
+                  <WrapperInput mensaje={"Título del trabajo"} type={"text"} name={"titulo_trabajo"} onchange={handleChange} />
+                  <ErrorMessage name="titulo_trabajo" className='text-red-500' component="div" />
                 </div>
-
-
+                <div className='flex flex-col gap-2'>
+                  <label className="block text-sm font-medium  text-gray-900">Tipo de participación en congreso</label>
+                  <Select className='w-[98%]' name='participacion_congreso' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`participacion_congreso`, selectedOption.value)} options={participacion} />
+                  <ErrorMessage name="participacion_congreso" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput mensaje={"País"} type={"text"} name={"pais"} onchange={handleChange} />
+                  <ErrorMessage name="pais" className='text-red-500' component="div" />
+                </div>
+              </div>
               <div id="fechas" className="grid grid-cols-3 gap-5">
-                <WrapperInput
-                  mensaje={"Fecha"}
-                  type={"date"}
-                  name={"fecha"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Palabra clave 1"}
-                  type={"text"}
-                  name={"palabraUno"}
-                  onchange={handleChange}
-                />
-                <WrapperInput
-                  mensaje={"Palabra clave 2"}
-                  type={"text"}
-                  name={"palabraDos"}
-                  onchange={handleChange}
-                />
+                <div>
+                  <WrapperInput mensaje={"Fecha"} type={"date"} name={"fecha"} onchange={handleChange} />
+                  <ErrorMessage name="fecha" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <div><WrapperInput mensaje={"Palabra clave 1"} type={"text"} name={"palabra_clave1"} onchange={handleChange} /></div>
+                  <ErrorMessage name="palabra_clave1" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput mensaje={"Palabra clave 2"} type={"text"} name={"palabra_clave2"} onchange={handleChange} />
+                  <ErrorMessage name="palabra_clave2" className='text-red-500' component="div" />
+                </div>
+                <div>
+                  <WrapperInput mensaje={"Palabra clave 3"} type={"text"} name={"palabra_clave3"} onchange={handleChange} />
+                  <ErrorMessage name="palabra_clave3" className='text-red-500' component="div" />
+                </div>
               </div>
-              <div className='grid grid-cols-3 w-[96%]'>
-              <WrapperInput
-                  mensaje={"Palabra clave 3"}
-                  type={"text"}
-                  name={"palabraTres"}
-                  onchange={handleChange}
-                  />
-              </div>
-    
               <div className="mt-3">
                 <button
                   type="submit"
@@ -146,7 +128,7 @@ function FormDifusion() {
         )}
       </Formik>
     </>
-  ) 
+  )
 }
 
 export default FormDifusion
