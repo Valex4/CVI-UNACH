@@ -1,9 +1,10 @@
 import React from 'react'
-import Title from "../../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../../../molecules/wrapperInput";
 import Swal from "sweetalert2";
 import Select from 'react-select';
+import { createDifusion } from "../../../../api/ComunicacionPublica/Routes";
+import Title from "../../../atoms/Title";
+import WrapperInput from "../../../molecules/wrapperInput";
 
 function FormDifusion() {
   const participacion = [
@@ -17,28 +18,34 @@ function FormDifusion() {
     { value: "folder", label: "Folder"},
   ]
 
+
+
   return (
     <>
     <Formik
         initialValues={{
-          nombreCongreso:"",
-          titulo:"",
-          tipo:"",
+          nombre_congreso:"",
+          titulo_trabajo:"",
+          participacion_congreso:"",
           pais:"",
           fecha:"",
-          palabraUno:"",
-          palabraDos:"",
-          palabraTres:""
+          palabra_clave1:"",
+          palabra_clave2:"",
+          palabra_clave3:""
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
-
+             const response = await createDifusion(values);
+              console.log(response.status)
                     if(response.status === 200){
-
-
+                      Swal.fire({
+                        icon: "success",
+                        title: "Registrado correctamente",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
                     }else{
                         Swal.fire({
                             icon: "error",
@@ -47,13 +54,7 @@ function FormDifusion() {
                             footer: 'Si el problema persiste intentelo mas tarde'
                           });
                           console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+                    } 
             console.table(values);
           } catch (error) {
             console.log(error);
@@ -80,19 +81,19 @@ function FormDifusion() {
               <WrapperInput
                 mensaje={"Nombre del congreso"}
                 type={"text"}
-                name={"nombreCongreso"}
+                name={"nombre_congreso"}
                 onchange={handleChange}
                 />
               <WrapperInput
                 mensaje={"Título del trabajo"}
                 type={"text"}
-                name={"titulo"}
+                name={"titulo_trabajo"}
                 onchange={handleChange}
                 />
 
                <div className='flex flex-col gap-2'>
               <label className="block text-sm font-medium  text-gray-900">Tipo de participación en congreso</label>
-              <Select className='w-[98%]' name='tipo' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`tipo`, selectedOption.value)} options={participacion} />
+              <Select className='w-[98%]' name='participacion_congreso' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`participacion_congreso`, selectedOption.value)} options={participacion} />
                 </div>
 
               <WrapperInput
@@ -114,13 +115,13 @@ function FormDifusion() {
                 <WrapperInput
                   mensaje={"Palabra clave 1"}
                   type={"text"}
-                  name={"palabraUno"}
+                  name={"palabra_clave1"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 2"}
                   type={"text"}
-                  name={"palabraDos"}
+                  name={"palabra_clave2"}
                   onchange={handleChange}
                 />
               </div>
@@ -128,7 +129,7 @@ function FormDifusion() {
               <WrapperInput
                   mensaje={"Palabra clave 3"}
                   type={"text"}
-                  name={"palabraTres"}
+                  name={"palabra_clave3"}
                   onchange={handleChange}
                   />
               </div>

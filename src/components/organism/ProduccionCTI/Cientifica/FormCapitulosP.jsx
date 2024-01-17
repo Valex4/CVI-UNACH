@@ -2,6 +2,7 @@ import React from 'react'
 import { Formik, Form } from "formik";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { createPublishedChapters } from "../../../../api/ProduccionCTI/Routes";
 import Select from 'react-select';
 import Title from "../../../atoms/Title";
 import WrapperInput from "../../../molecules/wrapperInput";
@@ -34,54 +35,59 @@ function FormCapitulosP() {
 ]
 
   const decisions = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" }
+    { value: true, label: "Si" },
+    { value: false, label: "No" }
   ];
 
   const dictaminado = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" }
+    { value: true, label: "Si" },
+    { value: false, label: "No" }
   ]
 
   return (
     <>
       <Formik
         initialValues={{
-          isbn: "",
-          tituloLibro: "",
+          ISBN: "",
+          titulo_libro: "",
           editorial: "",
-          numeroEdicion: "",
-          yearPublicacion: "",
-          tituloCapitulo: "",
-          numeroCapitulo: "",
-          paginaDe: "",
-          paginaA: "",
-          doi: "",
+          numero_edicion: "",
+          year_publicacion: "",
+          titulo_capitulo: "",
+          numero_capitulo: "",
+          de_pagina: "",
+          a_pagina: "",
+          DOI: "",
           resumen: "",
           area: "",
           campo:"",
           disciplina:"",
           subdisciplina:"",
-          apoyoConacyt: "",
+          apoyo_CONACYT: "",
           fondo: "",
-          rol: "",
-          estatus: "",
+          rol_participacion: "",
+          estatus_publicacion: "",
           objetivo: "",
           dictaminado: "",
-          url: "",
-          citaA: "",
-          citaB: "",
-          totalCita:""
+          url_cita: "",
+          cita_a: "",
+          cita_b: "",
+          total_citas:""
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
+            console.table(values);
+            const response = await createPublishedChapters(values);
 
                     if(response.status === 200){
-
-
+                      Swal.fire({
+                        icon: "success",
+                        title: "Bienvenido",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
                     }else{
                         Swal.fire({
                             icon: "error",
@@ -90,14 +96,7 @@ function FormCapitulosP() {
                             footer: 'Si el problema persiste intentelo mas tarde'
                           });
                           console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.table(values);
+                   } 
           } catch (error) {
             console.log(error);
           }
@@ -123,13 +122,13 @@ function FormCapitulosP() {
                 <WrapperInput
                   mensaje={"ISBN:"}
                   type={"text"}
-                  name={"isbn"}
+                  name={"ISBN"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Titulo del libro:"}
                   type={"text"}
-                  name={"tituloLibro"}
+                  name={"titulo_libro"}
                   onchange={handleChange}
                 />
               </div>
@@ -145,13 +144,13 @@ function FormCapitulosP() {
               <WrapperInput
                 mensaje={"Número de edición:"}
                 type={"number"}
-                name={"numeroEdicion"}
+                name={"numero_edicion"}
                 onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Año de la publicación:"}
                   type={"number"}
-                  name={"yearPublicacion"}
+                  name={"year_publicacion"}
                   onchange={handleChange}
                 />
                 </div>
@@ -159,32 +158,32 @@ function FormCapitulosP() {
                 <WrapperInput
                   mensaje={"Título del capítulo:"}
                   type={"text"}
-                  name={"tituloCapitulo"}
+                  name={"titulo_capitulo"}
                   onchange={handleChange}
                 />
                 <div className='grid grid-cols-3 gap-5'>
                 <WrapperInput
                   mensaje={"No. del capítulo:"}
                   type={"number"}
-                  name={"numeroCapitulo"}
+                  name={"numero_capitulo"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Páginas de:"}
                   type={"number"}
-                  name={"paginaDe"}
+                  name={"de_pagina"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"a:"}
                   type={"number"}
-                  name={"paginaA"}
+                  name={"a_pagina"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"DOI:"}
                   type={"number"}
-                  name={"doi"}
+                  name={"DOI"}
                   onchange={handleChange}
                 />
               </div>
@@ -231,15 +230,15 @@ function FormCapitulosP() {
                     ¿Recibió apoyo del CONACYT?
                   </label>
                   <Select
-                    name="apoyoConacyt"
+                    name="apoyo_CONACYT"
                     placeholder={"Seleccione una opción"}
                     onChange={(selectedOption, _) =>
-                      setFieldValue(`apoyoConacyt`, selectedOption.value)
+                      setFieldValue(`apoyo_CONACYT`, selectedOption.value)
                     }
                     options={decisions}
                   />
                 </div>
-                {values.apoyoConacyt === "si" && (
+                {values.apoyo_CONACYT == true && (
                   <WrapperInput
                     mensaje={"Fondo/programa: "}
                     type={"text"}
@@ -252,12 +251,12 @@ function FormCapitulosP() {
               <div className="grid grid-cols-3 gap-5">
                 <div className='flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900">Rol de participación:</label>
-                <Select className='w-[98%]' name='rol' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rol`, selectedOption.value)} options={rol} />
+                <Select className='w-[98%]' name='rol_participacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rol_participacion`, selectedOption.value)} options={rol} />
                 </div>
                   
                 <div className='flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900">Estatus de la publicación:</label>
-                <Select className='w-[98%]' name='estatus' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatus`, selectedOption.value)} options={estatus} />
+                <Select className='w-[98%]' name='estatus_publicacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatus_publicacion`, selectedOption.value)} options={estatus} />
                 </div>
 
                 <div className='flex flex-col gap-2'>
@@ -274,7 +273,7 @@ function FormCapitulosP() {
                 <WrapperInput
                   mensaje={"Url de la cita"}
                   type={"url"}
-                  name={"url"}
+                  name={"url_cita"}
                   onchange={handleChange}
                 />
                 </div>
@@ -282,21 +281,21 @@ function FormCapitulosP() {
                 <WrapperInput
                   mensaje={"Cita A:"}
                   type={"text"}
-                  name={"citaA"}
+                  name={"cita_a"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Cita B:"}
                   type={"text"}
-                  name={"citaB"}
+                  name={"cita_b"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Total de Cita:"}
                   type={"text"}
-                  name={"totalCita"}
+                  name={"total_citas"}
                   placeholder={"Total de cita:"}
-                  activo={"activo"}
+                  // activo={"activo"}
                   onchange={handleChange}
                 />
               </div>

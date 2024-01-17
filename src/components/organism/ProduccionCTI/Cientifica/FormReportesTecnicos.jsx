@@ -1,11 +1,10 @@
 import React from 'react'
-import Title from "../../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../../../molecules/wrapperInput";
-import { useState } from "react";
 import Swal from "sweetalert2";
-import { NavLink } from "react-router-dom";
 import Select from 'react-select';
+import { createReportsTech } from "../../../../api/ProduccionCTI/Routes";
+import Title from "../../../atoms/Title";
+import WrapperInput from "../../../molecules/wrapperInput";
 
 function FormReportesTecnicos() {
   const origins = [
@@ -17,8 +16,8 @@ function FormReportesTecnicos() {
   ]
 
   const decisions = [
-    {value:"si", label:"Si"},
-    {value:"no", label:"No"}
+    { value: true, label: "Si" },
+    { value: false, label: "No" },
   ]
 
   return (
@@ -27,27 +26,32 @@ function FormReportesTecnicos() {
         initialValues={{
           titulo:"",
           institucion:"",
-          entrega:"",
-          publicacion:"",
-          paginas:"",
-          reporteTecnico:"",
+          fecha_entrega:"",
+          fecha_publicacion:"",
+          numero_paginas:"",
+          origen:"",
           descripcion:"",
           objetivos:"",
-          clave1:"",
-          clave2:"",
-          clave3:"",
-          apoyoConacyt:"",
+          palabra_clave1:"",
+          palabra_clave2:"",
+          palabra_clave3:"",
+          apoyo_CONACYT:"",
           fondo:""
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
-
-                    if(response.status === 200){
-
-
+          console.table(values)
+           const response = await createReportsTech(values);
+            
+           if(response.status === 200){
+             Swal.fire({
+                        icon: "success",
+                        title: "Bienvenido",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
                     }else{
                         Swal.fire({
                             icon: "error",
@@ -56,14 +60,8 @@ function FormReportesTecnicos() {
                             footer: 'Si el problema persiste intentelo mas tarde'
                           });
                           console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.table(values);
+                        } 
+                        console.table(values);
           } catch (error) {
             console.log(error);
           }
@@ -96,29 +94,28 @@ function FormReportesTecnicos() {
                 name={"institucion"}
                 onchange={handleChange}
               />
-              <Title level={"h4"} text={"Fechas"} />
               <div id="fechas" className="grid grid-cols-3 gap-5">
                 <WrapperInput
                   mensaje={"Fecha de entrega:"}
                   type={"date"}
-                  name={"entrega"}
+                  name={"fecha_entrega"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Fecha de publicación: "}
                   type={"date"}
-                  name={"publicacion"}
+                  name={"fecha_publicacion"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Número de páginas: "}
-                  type={"number"}
-                  name={"paginas"}
+                  type={"text"}
+                  name={"numero_paginas"}
                   onchange={handleChange}
                 />
               </div>
               <label className="block text-sm font-medium  text-gray-900">Origen del reporte técnico:</label>
-              <Select name='reporteTecnico' className='z-40' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`reporteTecnico`, selectedOption.value)} options={origins} />
+              <Select name='origen' className='z-40' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`origen`, selectedOption.value)} options={origins} />
               <WrapperInput
                 mensaje={"Descripción: "}
                 type={"text"}
@@ -136,32 +133,47 @@ function FormReportesTecnicos() {
                 <WrapperInput
                   mensaje={"Palabra clave 1:"}
                   type={"text"}
-                  name={"clave1"}
+                  name={"palabra_clave1"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 2:"}
                   type={"text"}
-                  name={"clave2"}
+                  name={"palabra_clave2"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 3:"}
                   type={"text"}
-                  name={"clave3"}
+                  name={"palabra_clave3"}
                   onchange={handleChange}
                 />
                 
               </div>
-              <section className='grid grid-cols-3 gap-5'>
+              <section className="grid grid-cols-3 gap-5">
                 <div>
-                  <label className="block text-sm font-medium mb-3 text-gray-900">¿Recibicio apoyo del CONACYT?:</label>
-                  <Select name='apoyoConacyt' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`apoyoConacyt`, selectedOption.value)} options={decisions} /> 
+                  <label className="block text-sm font-medium mb-3 text-gray-900">
+                    ¿Recibicio apoyo del CONACYT?
+                  </label>
+                  <Select
+                    name="apoyo_CONACYT"
+                    placeholder={"Seleccione una opción"}
+                    onChange={(selectedOption, _) =>
+                      setFieldValue(`apoyo_CONACYT`, selectedOption.value)
+                    }
+                    options={decisions}
+                  />
                 </div>
-                  {values.apoyoConacyt === 'si' && (
-                      <WrapperInput mensaje={"Fondo/programa: "} type={"text"} name={"fondo"} onchange={handleChange}/>
-                  )}
-                </section>
+                {values.apoyo_CONACYT === true && (
+                  <WrapperInput
+                    mensaje={"Fondo/programa: "}
+                    type={"text"}
+                    name={"fondo"}
+                    onchange={handleChange}
+                  />
+                )}
+              </section>
+
               <div className="mt-3">
                 <button
                   type="submit"

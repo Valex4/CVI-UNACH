@@ -1,10 +1,10 @@
 import React from 'react'
-import Title from "../../../atoms/Title";
-import { Formik, Form } from "formik";
-import WrapperInput from "../../../molecules/wrapperInput";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import Select from 'react-select';
+import { Formik, Form } from "formik";
+import { createArticls } from "../../../../api/ProduccionCTI/Routes";
+import Title from "../../../atoms/Title";
+import WrapperInput from "../../../molecules/wrapperInput";
 
 function FormPArticulos() {
 
@@ -37,66 +37,64 @@ function FormPArticulos() {
     {value:"Mediciona y ciencias de la salud", label:"Mediciona y ciencias de la salud"},
 ]
 
-  const decisions = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" },
-  ];
+const decisions = [
+  { value: true, label: "Si" },
+  { value: false, label: "No" },
+]
+  
   return (
     <>
       <Formik
         initialValues={{
-          issnImpreso: "",
-          issnElectronico: "",
-          doi: "",
-          nombreRevista: "",
-          tituloArticulo: "",
-          numeroRevista: "",
-          volumenRevista: "",
-          yearPublicacion: "",
-          paginaDe: "",
-          paginaA: "",
-          clave1: "",
-          clave2: "",
-          clave3: "",
+          ISSN_impreso: "",
+          ISSN_electronico: "",
+          DOI: "",
+          nombre_revista: "",
+          titulo_articulo: "",
+          num_revista: "",
+          vol_revista: "",
+          year_publicacion: "",
+          de_pagina: "",
+          a_pagina: "",
+          palabra_clave1: "",
+          palabra_clave2: "",
+          palabra_clave3: "",
           area: "",
           campo:"",
           disciplina:"",
           subdisciplina:"",
-          apoyoConacyt: "",
+          apoyo_CONACYT: "",
           fondo: "",
-          rolParticipacion: "",
-          estatusPublicacion: "",
+          rol_participacion: "",
+          estatus_publicacion: "",
           objetivo: "",
-          url: "",
-          citaA: "",
-          citaB: "",
-          totalCita:""
+          url_cita: "",
+          cita_a: "",
+          cita_b: "",
+          total_cita:""
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
-
-                    if(response.status === 200){
-
-
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error...",
-                            text: "Intente de nuevo",
-                            footer: 'Si el problema persiste intentelo mas tarde'
-                          });
-                          console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
             console.table(values);
+            const response = await createArticls(values);
+            
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Bienvenido",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: "Intente de nuevo",
+                footer: 'Si el problema persiste intentelo mas tarde'
+              });
+            }
           } catch (error) {
             console.log(error);
           }
@@ -122,51 +120,51 @@ function FormPArticulos() {
                 <WrapperInput
                   mensaje={"ISSN impreso:"}
                   type={"text"}
-                  name={"issnImpreso"}
+                  name={"ISSN_impreso"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"ISSN electrónico:"}
                   type={"text"}
-                  name={"issnElectronico"}
+                  name={"ISSN_electronico"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"DOI:"}
                   type={"number"}
-                  name={"doi"}
+                  name={"DOI"}
                   onchange={handleChange}
                 />
               </div>
               <WrapperInput
                 mensaje={"Nombre de la revista:"}
                 type={"text"}
-                name={"nombreRevista"}
+                name={"nombre_revista"}
                 onchange={handleChange}
               />
               <WrapperInput
                 mensaje={"Título del artículo:"}
                 type={"text"}
-                name={"tituloArticulo"}
+                name={"titulo_articulo"}
                 onchange={handleChange}
               />
               <div className="grid grid-cols-3 gap-5">
                 <WrapperInput
                   mensaje={"Número de la revista:"}
                   type={"number"}
-                  name={"numeroRevista"}
+                  name={"num_revista"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Volumen de la revista:"}
                   type={"number"}
-                  name={"volumenRevista"}
+                  name={"vol_revista"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Año de la publicación:"}
                   type={"number"}
-                  name={"yearPublicacion"}
+                  name={"year_publicacion"}
                   onchange={handleChange}
                 />
               </div>
@@ -174,13 +172,13 @@ function FormPArticulos() {
                 <WrapperInput
                   mensaje={"Páginas de:"}
                   type={"number"}
-                  name={"paginaDe"}
+                  name={"de_pagina"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"a:"}
                   type={"number"}
-                  name={"paginaA"}
+                  name={"a_pagina"}
                   onchange={handleChange}
                 />
               </div>
@@ -188,19 +186,19 @@ function FormPArticulos() {
                 <WrapperInput
                   mensaje={"Palabra clave 1:"}
                   type={"text"}
-                  name={"clave1"}
+                  name={"palabra_clave1"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 2:"}
                   type={"text"}
-                  name={"clave2"}
+                  name={"palabra_clave2"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 3:"}
                   type={"text"}
-                  name={"clave3"}
+                  name={"palabra_clave3"}
                   onchange={handleChange}
               />
               </div>
@@ -236,15 +234,15 @@ function FormPArticulos() {
                     ¿Recibicio apoyo del CONACYT?
                   </label>
                   <Select
-                    name="apoyoConacyt"
+                    name="apoyo_CONACYT"
                     placeholder={"Seleccione una opción"}
                     onChange={(selectedOption, _) =>
-                      setFieldValue(`apoyoConacyt`, selectedOption.value)
+                    setFieldValue(`apoyo_CONACYT`, selectedOption.value)
                     }
                     options={decisions}
                   />
                 </div>
-                {values.apoyoConacyt === "si" && (
+                {values.apoyo_CONACYT === true && (
                   <WrapperInput
                     mensaje={"Fondo/programa: "}
                     type={"text"}
@@ -257,24 +255,24 @@ function FormPArticulos() {
               <div className="grid grid-cols-3 gap-5">
                 <div className='flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900">Rol de participación:</label>
-                <Select className='w-[98%]' name='rolParticipacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rolParticipacion`, selectedOption.value)} options={rol} />
+                <Select className='w-[98%]' name='rol_participacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rol_participacion`, selectedOption.value)} options={rol} />
                 </div>
                   
                 <div className='flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900">Estatus de la publicación:</label>
-                <Select className='w-[98%]' name='estatusPublicacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatusPublicacion`, selectedOption.value)} options={estatus} />
+                <Select className='w-[98%]' name='estatus_publicacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatus_publicacion`, selectedOption.value)} options={estatus} />
                 </div>
 
                 <div className='flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900">Objetivo:</label>
-                <Select className='w-[98%]' name='escolaridad' placeholder={"objetivo"} onChange={(selectedOption, _) => setFieldValue(`objetivo`, selectedOption.value)} options={objetivo} />
+                <Select className='w-[98%]' name='objetivo' placeholder={"objetivo"} onChange={(selectedOption, _) => setFieldValue(`objetivo`, selectedOption.value)} options={objetivo} />
                 </div>
               </div>
 
               <WrapperInput
                   mensaje={"Url de la cita:"}
                   type={"url"}
-                  name={"url"}
+                  name={"url_cita"}
                   onchange={handleChange}
                 />
 
@@ -282,21 +280,21 @@ function FormPArticulos() {
                 <WrapperInput
                   mensaje={"Cita A:"}
                   type={"text"}
-                  name={"citaA"}
+                  name={"cita_a"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Cita B:"}
                   type={"text"}
-                  name={"citaB"}
+                  name={"cita_b"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Total de Cita:"}
                   type={"text"}
-                  name={"totalCita"}
+                  name={"total_cita"}
                   placeholder={"Total de cita"}
-                  activo={"activo"}
+                  // activo={"activo"}
                   onchange={handleChange}
                 />
               </div>

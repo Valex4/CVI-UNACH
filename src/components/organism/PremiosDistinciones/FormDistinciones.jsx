@@ -1,8 +1,9 @@
 import React from 'react'
-import Title from "../../atoms/Title";
 import { Formik, Form } from "formik";
-import WrapperInput from "../../molecules/wrapperInput";
 import Swal from "sweetalert2";
+import { createDistinctions } from "../../../api/PremiosDistinciones/Routes";
+import WrapperInput from "../../molecules/wrapperInput";
+import Title from "../../atoms/Title";
 
 function FormDistinciones() {
 
@@ -10,36 +11,34 @@ function FormDistinciones() {
     <>
     <Formik
         initialValues={{
-          nombreDistincion:"",
+          nombre_distincion:"",
           institucion:"",
+          year:"",
           pais:"",
-          fecha:"",
-          descripcion:""
+          descripcion_distincion:"",
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
+            const response = await createDistinctions(values);
 
-                    if(response.status === 200){
-
-
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error...",
-                            text: "Intente de nuevo",
-                            footer: 'Si el problema persiste intentelo mas tarde'
-                          });
-                          console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Registrado correctamente",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: "Intente de nuevo",
+                footer: 'Si el problema persiste intentelo mas tarde'
+              });
+              console.log(error);
+            }
             console.table(values);
           } catch (error) {
             console.log(error);
@@ -65,7 +64,7 @@ function FormDistinciones() {
               <WrapperInput
                 mensaje={"Nombre de la distinción"}
                 type={"text"}
-                name={"nombreDistincion"}
+                name={"nombre_distincion"}
                 onchange={handleChange}
                 />
               <WrapperInput
@@ -75,22 +74,22 @@ function FormDistinciones() {
                 onchange={handleChange}
                 />
               <div id="fechas" className="grid grid-cols-2 gap-5">
+                <WrapperInput
+                  mensaje={"Año"}
+                  type={"text"}
+                  name={"year"}
+                  onchange={handleChange}
+                  />
               <WrapperInput
                 mensaje={"País"}
                 type={"text"}
                 name={"pais"}
                 onchange={handleChange}
                 />
-                <WrapperInput
-                  mensaje={"Fecha"}
-                  type={"date"}
-                  name={"fecha"}
-                  onchange={handleChange}
-                  />
                 </div>
                 <section className='mt-1 flex flex-col gap-2'>
                   <label className="block text-sm font-medium  text-gray-900 first-letter:">Descripción premio distinción:</label>
-                  <textarea name="descripcion" placeholder='Descripción' cols="10" rows="3" onChange={handleChange} className='textareaStyle'></textarea>
+                  <textarea name="descripcion_distincion" placeholder='Descripción' cols="10" rows="3" onChange={handleChange} className='textareaStyle'></textarea>
                 </section>
               </div>
     

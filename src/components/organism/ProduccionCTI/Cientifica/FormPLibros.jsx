@@ -6,6 +6,7 @@ import Select from 'react-select';
 import Title from "../../../atoms/Title";
 import WrapperInput from "../../../molecules/wrapperInput";
 import LanguagesFile from "../../../../assets/json/languages.json"
+import { createPublishingBooks } from "../../../../api/ProduccionCTI/Routes";
 
 function FormPLibros() {
   const [languagesJson, setLanguagesJson] = useState([]);
@@ -61,78 +62,76 @@ function FormPLibros() {
     {value:"Mediciona y ciencias de la salud", label:"Mediciona y ciencias de la salud"}
 ]
 
-  const decisions = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" }
-  ];
+const decisions = [
+  { value: true, label: "Si" },
+  { value: false, label: "No" },
+]
 
   const dictaminado = [
-    { value: "si", label: "Si" },
-    { value: "no", label: "No" }
+    { value: true, label: "Si" },
+    { value: false, label: "No" }
   ]
   return (
-<>
+    <>
       <Formik
         initialValues={{
-          isbn: "",
-          tituloLibro: "",
+          ISBN: "",
+          titulo_libro: "",
           pais: "",
           idioma: "",
-          yearPublicacion: "",
+          year_publicacion: "",
           volumen: "",
           tomo: "",
           tiraje: "",
-          doi: "",
-          numeroPagina: "",
-          clave1: "",
-          clave2: "",
-          clave3: "",
+          DOI: "",
+          numero_paginas: "",
+          palabra_clave1: "",
+          palabra_clave2: "",
+          palabra_clave3: "",
           editorial: "",
-          edicion: "",
-          yearEdicion: "",
-          isbnTraducido: "",
-          tituloTraducido: "",
-          idiomaTraducido: "",
-          apoyoConacyt: "",
+          numero_edicion: "",
+          year_edicion: "",
+          ISBN_traducido: "",
+          titulo_traducido: "",
+          idioma_traducido: "",
+          apoyo_CONACYT: "",
           fondo: "",
           area: "",
-          campo:"",
-          disciplina:"",
-          subdisciplina:"",
-          rol: "",
-          estatus: "",
+          campo: "",
+          disciplina: "",
+          subdisciplina: "",
+          rol_participacion: "",
+          estatus_publicacion: "",
           objetivo: "",
           dictaminado: "",
-          url: "",
-          citaA: "",
-          citaB: "",
-          totalCita:""
+          url_cita: "",
+          cita_a: "",
+          cita_b: "",
+          total_citas: ""
         }}
         onSubmit={async (values, actions) => {
           try {
             //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-            /* const response = await loginUser(values);
-
-                    if(response.status === 200){
-
-
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error...",
-                            text: "Intente de nuevo",
-                            footer: 'Si el problema persiste intentelo mas tarde'
-                          });
-                          console.log(error);
-                    } */
-            Swal.fire({
-              icon: "success",
-              title: "Bienvenido",
-              showConfirmButton: false,
-              timer: 1500,
-            });
             console.table(values);
+            const response = await createPublishingBooks(values);
+
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Bienvenido",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: "Intente de nuevo",
+                footer: 'Si el problema persiste intentelo mas tarde'
+              });
+              console.log(error);
+            }
           } catch (error) {
             console.log(error);
           }
@@ -153,22 +152,22 @@ function FormPLibros() {
           >
             <div id="padre" className="flex flex-col gap-8">
               <Title level={"h1"} text={"Publicación de libros"} />
-              
+
               <div className='grid grid-cols-3 gap-5'>
                 <WrapperInput
                   mensaje={"ISBN:"}
                   type={"text"}
-                  name={"isbn"}
+                  name={"ISBN"}
                   onchange={handleChange}
+                />
+                <div className='col-span-2'>
+                  <WrapperInput
+                    mensaje={"Titulo del libro:"}
+                    type={"text"}
+                    name={"titulo_libro"}
+                    onchange={handleChange}
                   />
-               <div className='col-span-2'>
-                <WrapperInput
-                  mensaje={"Titulo del libro:"}
-                  type={"text"}
-                  name={"tituloLibro"}
-                  onchange={handleChange}
-                  />
-              </div>   
+                </div>
               </div>
 
               <div className="grid grid-cols-3 gap-5">
@@ -178,14 +177,14 @@ function FormPLibros() {
                   name={"pais"}
                   onchange={handleChange}
                 />
-              <section className='mt-1 flex flex-col gap-2'>
+                <section className='mt-1 flex flex-col gap-2'>
                   <label className="block text-sm font-medium  text-gray-900 first-letter:">Idioma</label>
                   <Select name='idioma' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`idioma`, selectedOption.value)} options={languagesJson} />
-            </section>
+                </section>
                 <WrapperInput
                   mensaje={"Año de la publicación:"}
                   type={"number"}
-                  name={"yearPublicacion"}
+                  name={"year_publicacion"}
                   onchange={handleChange}
                 />
                 <WrapperInput
@@ -211,13 +210,13 @@ function FormPLibros() {
                 <WrapperInput
                   mensaje={"DOI:"}
                   type={"number"}
-                  name={"doi"}
+                  name={"DOI"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Numero de páginas:"}
                   type={"number"}
-                  name={"numeroPagina"}
+                  name={"numero_paginas"}
                   onchange={handleChange}
                 />
               </div>
@@ -226,21 +225,21 @@ function FormPLibros() {
                 <WrapperInput
                   mensaje={"Palabra clave 1:"}
                   type={"text"}
-                  name={"clave1"}
+                  name={"palabra_clave1"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 2:"}
                   type={"text"}
-                  name={"clave2"}
+                  name={"palabra_clave2"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Palabra clave 3:"}
                   type={"text"}
-                  name={"clave3"}
+                  name={"palabra_clave3"}
                   onchange={handleChange}
-              />
+                />
               </div>
               <div className="grid grid-cols-3 gap-5">
                 <WrapperInput
@@ -252,49 +251,49 @@ function FormPLibros() {
                 <WrapperInput
                   mensaje={"Numero de edición:"}
                   type={"number"}
-                  name={"edicion"}
+                  name={"numero_edicion"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Año de edición:"}
                   type={"number"}
-                  name={"yearEdicion"}
+                  name={"year_edicion"}
                   onchange={handleChange}
                 />
               </div>
-                <div className='grid grid-cols-2 gap-5'>
+              <div className='grid grid-cols-2 gap-5'>
                 <WrapperInput
                   mensaje={"ISBN traducido:"}
                   type={"text"}
-                  name={"isbnTraducido"}
+                  name={"ISBN_traducido"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Título traducido:"}
                   type={"text"}
-                  name={"tituloTraducido"}
+                  name={"titulo_traducido"}
                   onchange={handleChange}
                 />
-                </div>
+              </div>
               <div className='grid grid-cols-3 gap-5'>
-              <section className='mt-1 flex flex-col gap-2'>
+                <section className='mt-1 flex flex-col gap-2'>
                   <label className="block text-sm font-medium  text-gray-900 first-letter:">Idioma traducido:</label>
-                  <Select name='idiomaTraducido' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`idiomaTraducido`, selectedOption.value)} options={languagesJson} />
-            </section>
-            <div>
+                  <Select name='idioma_traducido' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`idioma_traducido`, selectedOption.value)} options={languagesJson} />
+                </section>
+                <div>
                   <label className="block text-sm font-medium mb-3 text-gray-900">
                     ¿Recibió apoyo del CONACYT?
                   </label>
                   <Select
-                    name="apoyoConacyt"
+                    name="apoyo_CONACYT"
                     placeholder={"Seleccione una opción"}
                     onChange={(selectedOption, _) =>
-                      setFieldValue(`apoyoConacyt`, selectedOption.value)
+                      setFieldValue(`apoyo_CONACYT`, selectedOption.value)
                     }
                     options={decisions}
                   />
                 </div>
-                {values.apoyoConacyt === "si" && (
+                {values.apoyo_CONACYT === true && (
                   <WrapperInput
                     mensaje={"Fondo/programa: "}
                     type={"text"}
@@ -303,12 +302,12 @@ function FormPLibros() {
                   />
                 )}
               </div>
-            <Title level={"h4"} text={"Área de conocimiento"} />
+              <Title level={"h4"} text={"Área de conocimiento"} />
               <div className="grid grid-cols-3 gap-5">
                 <section className='mt-1 flex flex-col gap-2'>
-                    <label className="block text-sm font-medium  text-gray-900 first-letter:">Área:</label>
-                    <Select name='area' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
-                </section>  
+                  <label className="block text-sm font-medium  text-gray-900 first-letter:">Área:</label>
+                  <Select name='area' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
+                </section>
                 <WrapperInput
                   mensaje={"Campo:"}
                   type={"text"}
@@ -327,57 +326,57 @@ function FormPLibros() {
                   name={"subdisciplina"}
                   onchange={handleChange}
                 />
-                </div>
+              </div>
 
-                
+
               <div className="grid grid-cols-3 gap-5">
                 <div className='flex flex-col gap-2'>
-                <label className="block text-sm font-medium  text-gray-900">Rol de participación:</label>
-                <Select className='w-[98%]' name='rol' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rol`, selectedOption.value)} options={rol} />
-                </div>
-                  
-                <div className='flex flex-col gap-2'>
-                <label className="block text-sm font-medium  text-gray-900">Estatus de la publicación:</label>
-                <Select className='w-[98%]' name='estatus' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatus`, selectedOption.value)} options={estatus} />
+                  <label className="block text-sm font-medium  text-gray-900">Rol de participación:</label>
+                  <Select className='w-[98%]' name='rol_participacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`rol_participacion`, selectedOption.value)} options={rol} />
                 </div>
 
                 <div className='flex flex-col gap-2'>
-                <label className="block text-sm font-medium  text-gray-900">Objetivo:</label>
-                <Select className='w-[98%]' name='objetivo' placeholder={"Objetivo"} onChange={(selectedOption, _) => setFieldValue(`objetivo`, selectedOption.value)} options={objetivo} />
+                  <label className="block text-sm font-medium  text-gray-900">Estatus de la publicación:</label>
+                  <Select className='w-[98%]' name='estatus_publicacion' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`estatus_publicacion`, selectedOption.value)} options={estatus} />
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                  <label className="block text-sm font-medium  text-gray-900">Objetivo:</label>
+                  <Select className='w-[98%]' name='objetivo' placeholder={"Objetivo"} onChange={(selectedOption, _) => setFieldValue(`objetivo`, selectedOption.value)} options={objetivo} />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-5">
-              <section className='mt-1 flex flex-col gap-2'>
-                    <label className="block text-sm font-medium  text-gray-900 first-letter:">¿Está dictaminado?</label>
-                    <Select name='dictaminado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`dictaminado`, selectedOption.value)} options={dictaminado} />
-                </section> 
+                <section className='mt-1 flex flex-col gap-2'>
+                  <label className="block text-sm font-medium  text-gray-900 first-letter:">¿Está dictaminado?</label>
+                  <Select name='dictaminado' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`dictaminado`, selectedOption.value)} options={dictaminado} />
+                </section>
                 <WrapperInput
                   mensaje={"Url de la cita:"}
                   type={"url"}
-                  name={"url"}
+                  name={"url_cita"}
                   onchange={handleChange}
                 />
-                </div>
-                <div className="grid grid-cols-3 gap-5">
+              </div>
+              <div className="grid grid-cols-3 gap-5">
                 <WrapperInput
                   mensaje={"Cita A:"}
                   type={"text"}
-                  name={"citaA"}
+                  name={"cita_a"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Cita B:"}
                   type={"text"}
-                  name={"citaB"}
+                  name={"cita_b"}
                   onchange={handleChange}
                 />
                 <WrapperInput
                   mensaje={"Total de Cita:"}
                   type={"text"}
-                  name={"totalCita"}
+                  name={"total_citas"}
                   placeholder={"Total de cita"}
-                  activo={"activo"}
+                  // activo={"activo"}
                   onchange={handleChange}
                 />
               </div>

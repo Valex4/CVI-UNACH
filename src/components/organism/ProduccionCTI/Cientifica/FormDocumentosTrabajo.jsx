@@ -1,6 +1,7 @@
 import React from 'react'
 import { Formik, Form } from 'formik';
 import Swal from 'sweetalert2';
+import { createDocumentsWork } from "../../../../api/ProduccionCTI/Routes";
 import Title from '../../../atoms/Title';
 import WrapperInput from '../../../molecules/wrapperInput';
 import Select from 'react-select';
@@ -18,41 +19,46 @@ function FormDocumentosTrabajo() {
 ]
 
   const decisions = [
-    {value:"si", label:"Si"},
-    {value:"no", label:"No"},
-]
+    { value: true, label: "Si" },
+    { value: false, label: "No" },
+  ]
+
   return (
     <Formik
     initialValues={{
-      titulo:"",
+      titulo_documento_trabajo:"",
       nombre:"",
-      primerApellido:"",
-      segundoApellido:"",
-      tituloPublicacion:"",
-      paginasDe:"",
-      a:"",
-      publicacion:"",
-      país:"",
-      clave1:"",
-      clave2:"",
-      clave3:"",
-      areaConocimiento:"",
+      primer_apellido:"",
+      segundo_apellido:"",
+      titulo_publicacion:"",
+      de_pagina:"",
+      a_pagina:"",
+      year_publicacion:"",
+      pais:"",
+      palabra_clave1:"",
+      palabra_clave2:"",
+      palabra_clave3:"",
+      area:"",
       campo:"",
       disciplina:"",
       subdisciplina:"",
-      apoyoConacyt:"",
-      fondo:"",
-        
+      apoyo_CONACYT:"",
+      fondo:""
     }}
     onSubmit={async (values, actions) => {
       try {
         //Descomentar lo siguiente cuando este lo del axios y funcione el back
 
-        /* const response = await loginUser(values);
-
+        console.table(values)
+        const response = await createDocumentsWork(values);
+                console.log(response.status)
                 if(response.status === 200){
-
-
+                  Swal.fire({
+                    icon: "success",
+                    title: "Registrado correctamente",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
                 }else{
                     Swal.fire({
                         icon: "error",
@@ -61,14 +67,7 @@ function FormDocumentosTrabajo() {
                         footer: 'Si el problema persiste intentelo mas tarde'
                       });
                       console.log(error);
-                } */
-        Swal.fire({
-          icon: "success",
-          title: "Bienvenido",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        console.table(values);
+              }
       } catch (error) {
         console.log(error);
       }
@@ -92,7 +91,7 @@ function FormDocumentosTrabajo() {
               <WrapperInput
               mensaje={"Título del documento o trabajo:"}
               type={"text"}
-              name={"titulo"}
+              name={"titulo_documento_trabajo"}
               onchange={handleChange}
             />
             <div id="fechas" className="grid grid-cols-3 gap-5">
@@ -105,43 +104,43 @@ function FormDocumentosTrabajo() {
            <WrapperInput
             mensaje={"Primer apellido: "}
             type={"text"}
-            name={"primerApellido"}
+            name={"primer_apellido"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Segundo apellido: "}
             type={"text"}
-            name={"segundoApellido"}
+            name={"segundo_apellido"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Título de la publicación: "}
             type={"text"}
-            name={"tituloPublicacion"}
+            name={"titulo_publicacion"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Páginas de: "}
             type={"number"}
-            name={"paginasDe"}
+            name={"de_pagina"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"a: "}
             type={"number"}
-            name={"a"}
+            name={"a_pagina"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Año de publicación: "}
             type={"text"}
-            name={"publicacion"}
+            name={"year_publicacion"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"País: "}
             type={"text"}
-            name={"país"}
+            name={"pais"}
             onchange={handleChange}
           />
           </div>
@@ -149,19 +148,19 @@ function FormDocumentosTrabajo() {
           <WrapperInput
             mensaje={"Palabra clave 1: "}
             type={"text"}
-            name={"clave1"}
+            name={"palabra_clave1"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Palabra clave 2: "}
             type={"text"}
-            name={"clave2"}
+            name={"palabra_clave2"}
             onchange={handleChange}
           />
           <WrapperInput
             mensaje={"Palabra clave 3: "}
             type={"text"}
-            name={"clave3"}
+            name={"palabra_clave3"}
             onchange={handleChange}
           />
           </div>
@@ -169,7 +168,7 @@ function FormDocumentosTrabajo() {
           <div className='grid grid-cols-3 gap-5'>
             <section className='mt-1 flex flex-col gap-2'>
                 <label className="block text-sm font-medium  text-gray-900 first-letter:">Área:</label>
-                <Select name='areaConocimiento' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`areaConocimiento`, selectedOption.value)} options={areas} />
+                <Select name='area' style="display: none;" placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`area`, selectedOption.value)} options={areas} />
             </section>
             <WrapperInput
             mensaje={"Campo: "}
@@ -190,16 +189,30 @@ function FormDocumentosTrabajo() {
             onchange={handleChange}
           />
           </div>
-          <section className='grid grid-cols-3 gap-5'>
+
+          <section className="grid grid-cols-3 gap-5">
                 <div>
-                  <label className="block text-sm font-medium mb-3 text-gray-900">¿Recibicio apoyo del CONACYT?:</label>
-                  <Select name='apoyoConacyt' placeholder={"Seleccione una opción"} onChange={(selectedOption, _) => setFieldValue(`apoyoConacyt`, selectedOption.value)} options={decisions} /> 
+                  <label className="block text-sm font-medium mb-3 text-gray-900">
+                    ¿Recibicio apoyo del CONACYT?
+                  </label>
+                  <Select
+                    name="apoyo_CONACYT"
+                    placeholder={"Seleccione una opción"}
+                    onChange={(selectedOption, _) =>
+                      setFieldValue(`apoyo_CONACYT`, selectedOption.value)
+                    }
+                    options={decisions}
+                  />
                 </div>
-                  {values.apoyoConacyt === 'si' && (
-                      <WrapperInput mensaje={"Fondo/programa: "} type={"text"} name={"fondo"} onchange={handleChange}/>
-                  )}
-          </section>
-            
+                {values.apoyo_CONACYT === true && (
+                  <WrapperInput
+                    mensaje={"Fondo/programa: "}
+                    type={"text"}
+                    name={"fondo"}
+                    onchange={handleChange}
+                  />
+                )}
+              </section>            
           
           <div className="mt-3">
             <button
